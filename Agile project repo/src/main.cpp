@@ -1,18 +1,14 @@
+// Include the Servo library 
+#include <ESP32Servo.h> 
 #include <Arduino.h>
+// Declare the Servo pin 
 
-// put function declarations here:
-int myFunction(int, int);
+// Create a servo object 
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+void setup() { 
+   // We need to attach the servo to the used pin number 
+   Serial.begin(9600);
 }
-
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void loop(){ 
+   Serial.write("apa\n");
 }
