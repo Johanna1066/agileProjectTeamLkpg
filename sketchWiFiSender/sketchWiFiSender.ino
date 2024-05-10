@@ -50,7 +50,7 @@ void loop() {
 
   if (!TCPclient.connected()) {
     Serial.println("Connection is disconnected");
-    TCPclient.stop();
+    TCPclient.stop();    // what do stop do?
 
     // reconnect to TCP server (Arduino #2)
     if (TCPclient.connect(serverAddress, serverPort)) {
