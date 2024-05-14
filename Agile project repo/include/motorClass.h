@@ -26,9 +26,9 @@ private:
 public:
     Engine::Engine(int velocityPIN, int positivePIN, int negativePIN)
     {
-        engineVelocity = velocityPIN;
-        enginePositive = positivePIN;
-        engineNegative = negativePIN;
+        engineVelocityPIN = velocityPIN;
+        enginePositivePIN = positivePIN;
+        engineNegativePIN = negativePIN;
     }
 
     Engine::~Engine()
@@ -43,7 +43,7 @@ public:
 
     void setVelocity(int newVelocity);
     {
-        // MEMO: Use analogWrite to change velocity
+        analogWrite(engineVelocityPIN, newVelocity);
     }
 
     void intitateEngine()
