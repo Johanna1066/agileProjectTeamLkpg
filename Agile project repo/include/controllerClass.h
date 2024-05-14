@@ -1,5 +1,4 @@
-#include <iostream>
-#include <Arduino.h>
+#pragma once
 
 class Controller
 {
@@ -24,7 +23,7 @@ void Controller::forwardData()
 
 //----------Engine class---------------
 
-class engine : public Controller
+class Engine : public Controller
 {
 private:
 #define engingeRightVelocity A1 // The Arduino Nano ESP32 pin connected to the ENA pin L298N
@@ -63,6 +62,14 @@ void directionReverse()
 
     digitalWrite(engingeLeftPositive, LOW);
     digitalWrite(engingeLeftNegative, HIGH);
+}
+
+Engine::Engine()
+{
+}
+
+Engine::~Engine()
+{
 }
 
 //---------Servo class---------------
