@@ -15,7 +15,7 @@ int yAxisVal = 2000;
 
 
 const char* ssid = "Chokladboll";     // CHANGE TO YOUR WIFI SSID
-const char* password = "Vilseberga"; // CHANGE TO YOUR WIFI PASSWORD
+const char* password = ""; // CHANGE TO YOUR WIFI PASSWORD
 const char* serverAddress = "192.168.0.112"; // CHANGE TO ESP32#2'S IP ADDRESS
 const int serverPort = 4080;
 
