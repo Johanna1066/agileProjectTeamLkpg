@@ -11,7 +11,7 @@
 // WiFi stuff
 #define SERVER_PORT 4080
 const char* ssid = "Chokladboll";     // CHANGE TO YOUR WIFI SSID
-const char* password = "Vilseberga"; // CHANGE TO YOUR WIFI PASSWORD
+const char* password = ""; // CHANGE TO YOUR WIFI PASSWORD
 WiFiServer TCPserver(SERVER_PORT);
 
 const int Xin = A6;
