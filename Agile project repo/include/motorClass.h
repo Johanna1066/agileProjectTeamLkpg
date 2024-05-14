@@ -1,29 +1,19 @@
 #pragma once
 
-class Controller
+class Motor
 {
 private:
 public:
-    Controller(/* args */);
-    ~Controller();
     void forwardData();
 };
 
-Controller::Controller(/* args */)
-{
-}
-
-Controller::~Controller()
-{
-}
-
-void Controller::forwardData()
+void Motor::forwardData()
 {
 }
 
 //----------Engine class---------------
 
-class Engine : public Controller
+class Engine : public Motor
 {
 private:
 #define engingeRightVelocity A1 // The Arduino Nano ESP32 pin connected to the ENA pin L298N
@@ -41,6 +31,14 @@ public:
     void initiateEngine();
     void directionReverse();
 };
+
+Engine::Engine()
+{
+}
+
+Engine::~Engine()
+{
+}
 
 void intitateEngine()
 {
@@ -64,24 +62,25 @@ void directionReverse()
     digitalWrite(engingeLeftNegative, HIGH);
 }
 
-Engine::Engine()
-{
-}
-
-Engine::~Engine()
-{
-}
-
 //---------Servo class---------------
 
-class servo : public Controller
+class Servo : public Motor
 {
 private:
     int direction{};
 
 public:
+    Servo::Servo();
+    Servo::~Servo();
     void setDirection(int newDirection);
 };
+
+Servo::Servo()
+{
+}
+Servo::~Servo()
+{
+}
 
 void setDirection(int newDirection)
 {

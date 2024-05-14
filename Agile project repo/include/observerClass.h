@@ -1,26 +1,16 @@
 #pragma once
 
-class Observer
+class Controller
 {
 private:
 public:
-    Observer(/* args */);
-    ~Observer();
 };
-
-Observer::Observer(/* args */)
-{
-}
-
-Observer::~Observer()
-{
-}
 
 //--------AntiCrash------------
 
 /*IDEA: have high priority in RTOS*/
 
-class AntiCrash : public Observer
+class AntiCrash : public Controller
 {
 private:
     int distanceToObject{};
@@ -28,8 +18,17 @@ private:
     int maxSafetyDistance{};
 
 public:
+    AntiCrash::AntiCrash();
+    AntiCrash::~AntiCrash();
     void checkDistance(int newReading);
 };
+AntiCrash::AntiCrash()
+{
+}
+
+AntiCrash::~AntiCrash()
+{
+}
 
 void checkDistance(int newReading)
 {
@@ -37,7 +36,7 @@ void checkDistance(int newReading)
 
 //-------Steering----------
 
-class Steering : public Observer
+class Steering : public Controller
 {
 private:
     int engineVelocity{};
@@ -45,10 +44,18 @@ private:
     int servoDirection{};
 
 public:
+    Steering::Steering();
+    Steering::~Steering();
     void updateEngineVelocity(int newReading);
     void updateEngineDirection();
     void updateServoDirection(int newReading);
 };
+Steering::Steering()
+{
+}
+Steering::~Steering()
+{
+}
 
 void updateEngineVelocity(int newReading)
 {

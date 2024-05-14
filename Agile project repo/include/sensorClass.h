@@ -9,14 +9,6 @@ public:
     ~Sensor();
 };
 
-Sensor::Sensor(/* args */)
-{
-}
-
-Sensor::~Sensor()
-{
-}
-
 //------USSensor---------
 
 class USsensor : public Sensor
