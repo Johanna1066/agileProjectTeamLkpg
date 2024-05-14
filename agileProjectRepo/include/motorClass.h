@@ -51,6 +51,8 @@ public:
         pinMode(engineVelocityPIN, OUTPUT);
         pinMode(enginePositivePIN, OUTPUT);
         pinMode(engineNegativePIN, OUTPUT);
+        digitalWrite(enginePositivePIN, LOW);
+        digitalWrite(engineNegativePIN, HIGH);
     }
     void directionReverse()
     {
