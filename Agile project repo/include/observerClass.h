@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 class Controller
 {
 private:
@@ -8,7 +8,7 @@ public:
 
 //--------AntiCrash------------
 
-/*IDEA: have high priority in RTOS*/
+//IDEA: have high priority in RTOS
 
 class AntiCrash : public Controller
 {
@@ -72,3 +72,5 @@ public:
         // IDEA: Update servoDIrection
     }
 };
+
+*/

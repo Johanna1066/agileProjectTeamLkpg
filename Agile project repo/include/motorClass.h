@@ -24,41 +24,41 @@ private:
     bool direction{}; // true = forward, false = backwards
 
 public:
-    Engine::Engine(int velocityPIN, int positivePIN, int negativePIN)
+    Engine(int velocityPIN, int positivePIN, int negativePIN)
     {
         engineVelocityPIN = velocityPIN;
         enginePositivePIN = positivePIN;
         engineNegativePIN = negativePIN;
     }
 
-    Engine::~Engine()
+    ~Engine()
     {
-        delete engineVelocityPIN;
+        /*delete engineVelocityPIN;
         delete enginePositivePIN;
         delete engineNegativePIN;
 
         delete velocity;
-        delete direction;
+        delete direction;*/
     }
 
-    void setVelocity(int newVelocity);
+    void setVelocity(int newVelocity)
     {
         analogWrite(engineVelocityPIN, newVelocity);
     }
 
     void intitateEngine()
     {
-        pinMode(engineVelocity, OUTPUT);
-        pinMode(enginePositive, OUTPUT);
-        pinMode(engineNegative, OUTPUT);
+        pinMode(engineVelocityPIN, OUTPUT);
+        pinMode(enginePositivePIN, OUTPUT);
+        pinMode(engineNegativePIN, OUTPUT);
     }
     void directionReverse()
     {
         // May change depending on connection to enginedriver hardware
         // IDEA: add if- depending on bool diretion.
 
-        digitalWrite(enginePositive, LOW);
-        digitalWrite(engineNegative, HIGH);
+        digitalWrite(enginePositivePIN, LOW);
+        digitalWrite(engineNegativePIN, HIGH);
     }
 };
 
@@ -71,13 +71,13 @@ private:
     int direction{};
 
 public:
-    Servo::Servo()
+    Servo()
     {
     }
 
-    Servo::~Servo()
+    ~Servo()
     {
-        delete direction;
+        // delete direction;
     }
 
     void setDirection(int newDirection)

@@ -1,11 +1,11 @@
 #pragma once
-
+/*
 class Sensor
 {
 private:
-    /* data */
+
 public:
-    Sensor(/* args */);
+    Sensor();
     ~Sensor();
 };
 
@@ -95,3 +95,4 @@ public:
 
     // IDEA: Setup subscription function
 };
+*/
