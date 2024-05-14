@@ -14,73 +14,84 @@ public:
 class USsensor : public Sensor
 {
 private:
+    int sensorTriggerPIN;
+    int sensorRecieverPIN;
+
     int distance{};
 
 public:
-    USsensor(/* args */);
-    ~USsensor();
+    USsensor::USsensor(int triggerPIN, int recieverPIN)
+    {
+        sensorTriggerPIN = triggerPIN;
+        sensorRecieverPIN = recieverPIN;
+    }
 
-    void setDistance();
-    void initiateSensor();
-    void readDistance();
+    USsensor::~USsensor()
+    {
+        delete sensorTriggerPIN;
+        delete sensorRecieverPIN;
+
+        delete distance;
+    }
+
+    void setDistance()
+    {
+    }
+
+    void initiateSensor()
+    {
+    }
+
+    void readDistance()
+    {
+    }
 
     // IDEA: Setup subscription function
 };
-
-USsensor::USsensor(/* args */)
-{
-}
-
-USsensor::~USsensor()
-{
-}
-
-void setDistance()
-{
-}
-
-void initiateSensor()
-{
-}
-
-void readDistance()
-{
-}
 
 //------Joystick---------
 
 class joyStick : public Sensor
 {
 private:
+    int joyStickVerticalPIN;
+    int joyStickHorizontalPIN;
+    int joyStickButtonPIN;
+
     int verticalValue{};
     int horizontalValue{};
     int buttonValue{};
 
 public:
-    void vertialRead();
-    void horizontalRead();
-    void buttonRead();
+    joyStick::joyStick(int verticalPIN, int horizontalPIN, int buttonPIN)
+    {
+        joyStickVerticalPIN = verticalPIN;
+        joyStickHorizontalPIN = horizontalPIN;
+        joyStickButtonPIN = buttonPIN;
+    }
 
-    joyStick(/* args */);
-    ~joyStick();
+    joyStick::~joyStick()
+    {
+        delete joyStickButtonPIN;
+        delete joyStickHorizontalPIN;
+        delete joyStickButtonPIN;
+
+        delete verticalValue;
+        delete horizontalValue;
+        delete buttonValue;
+    }
+
+    void vertialRead()
+    {
+    }
+
+    void horizontalRead()
+    {
+    }
+
+    void buttonRead()
+    {
+    }
 
     // IDEA: Setup subscription function
 };
-
-void vertialRead()
-{
-}
-void horizontalRead()
-{
-}
-void buttonRead()
-{
-}
-
-joyStick::joyStick(/* args */)
-{
-}
-
-joyStick::~joyStick()
-{
-}

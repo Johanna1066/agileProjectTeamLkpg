@@ -16,73 +16,72 @@ void Motor::forwardData()
 class Engine : public Motor
 {
 private:
-#define engingeRightVelocity A1 // The Arduino Nano ESP32 pin connected to the ENA pin L298N
-#define engingeRightPositive D6 // The Arduino Nano ESP32 pin connected to the IN1 pin L298N
-#define engingeRightNegative D5
-#define engineLeftVelocity A2
-#define engingeLeftPositive D4
-#define engingeLeftNegative D3
+    int engineVelocityPIN{};
+    int enginePositivePIN{};
+    int engineNegativePIN{};
 
     int velocity{};
     bool direction{}; // true = forward, false = backwards
 
 public:
+    Engine::Engine(int velocityPIN, int positivePIN, int negativePIN)
+    {
+        engineVelocity = velocityPIN;
+        enginePositive = positivePIN;
+        engineNegative = negativePIN;
+    }
+
+    Engine::~Engine()
+    {
+        delete engineVelocityPIN;
+        delete enginePositivePIN;
+        delete engineNegativePIN;
+
+        delete velocity;
+        delete direction;
+    }
+
     void setVelocity(int newVelocity);
-    void initiateEngine();
-    void directionReverse();
+    {
+        // MEMO: Use analogWrite to change velocity
+    }
+
+    void intitateEngine()
+    {
+        pinMode(engineVelocity, OUTPUT);
+        pinMode(enginePositive, OUTPUT);
+        pinMode(engineNegative, OUTPUT);
+    }
+    void directionReverse()
+    {
+        // May change depending on connection to enginedriver hardware
+        // IDEA: add if- depending on bool diretion.
+
+        digitalWrite(enginePositive, LOW);
+        digitalWrite(engineNegative, HIGH);
+    }
 };
-
-Engine::Engine()
-{
-}
-
-Engine::~Engine()
-{
-}
-
-void intitateEngine()
-{
-    pinMode(engingeRightVelocity, OUTPUT);
-    pinMode(engingeRightPositive, OUTPUT);
-    pinMode(engingeRightNegative, OUTPUT);
-    pinMode(engineLeftVelocity, OUTPUT);
-    pinMode(engingeLeftPositive, OUTPUT);
-    pinMode(engingeLeftNegative, OUTPUT);
-}
-
-void directionReverse()
-{
-    // May change depending on connection to enginedriver hardware
-    // IDEA: add if- depending on bool diretion.
-
-    digitalWrite(engingeRightPositive, LOW);
-    digitalWrite(engingeRightNegative, HIGH);
-
-    digitalWrite(engingeLeftPositive, LOW);
-    digitalWrite(engingeLeftNegative, HIGH);
-}
 
 //---------Servo class---------------
 
 class Servo : public Motor
 {
 private:
+    // TODO: Add PINs
     int direction{};
 
 public:
-    Servo::Servo();
-    Servo::~Servo();
-    void setDirection(int newDirection);
+    Servo::Servo()
+    {
+    }
+
+    Servo::~Servo()
+    {
+        delete direction;
+    }
+
+    void setDirection(int newDirection)
+    {
+        // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
+    }
 };
-
-Servo::Servo()
-{
-}
-Servo::~Servo()
-{
-}
-
-void setDirection(int newDirection)
-{
-    // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
-}

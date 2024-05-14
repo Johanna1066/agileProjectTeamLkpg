@@ -18,21 +18,21 @@ private:
     int maxSafetyDistance{};
 
 public:
-    AntiCrash::AntiCrash();
-    AntiCrash::~AntiCrash();
-    void checkDistance(int newReading);
+    AntiCrash::AntiCrash()
+    {
+    }
+
+    AntiCrash::~AntiCrash()
+    {
+        delete distanceToObject;
+        delete minSafetyDistance;
+        delete maxSafetyDistance;
+    }
+
+    void checkDistance(int newReading)
+    {
+    }
 };
-AntiCrash::AntiCrash()
-{
-}
-
-AntiCrash::~AntiCrash()
-{
-}
-
-void checkDistance(int newReading)
-{
-}
 
 //-------Steering----------
 
@@ -44,33 +44,31 @@ private:
     int servoDirection{};
 
 public:
-    Steering::Steering();
-    Steering::~Steering();
-    void updateEngineVelocity(int newReading);
-    void updateEngineDirection();
-    void updateServoDirection(int newReading);
+    Steering::Steering()
+    {
+    }
+    Steering::~Steering()
+    {
+        delete engineVelocity;
+        delete engingeDirection;
+        delete servoDirection;
+    }
+
+    void updateEngineVelocity(int newReading)
+    {
+
+        // IDEA: Map new reading with posible velocities
+        // IDEA: Update engineVeclocity
+    }
+
+    void updateEngineDirection()
+    {
+    }
+
+    void updateServoDIrection(int newReading)
+    {
+
+        // IDEA: Map new reading with posible directions
+        // IDEA: Update servoDIrection
+    }
 };
-Steering::Steering()
-{
-}
-Steering::~Steering()
-{
-}
-
-void updateEngineVelocity(int newReading)
-{
-
-    // IDEA: Map new reading with posible velocities
-    // IDEA: Update engineVeclocity
-}
-
-void updateEngineDirection()
-{
-}
-
-void updateServoDIrection(int newReading)
-{
-
-    // IDEA: Map new reading with posible directions
-    // IDEA: Update servoDIrection
-}
