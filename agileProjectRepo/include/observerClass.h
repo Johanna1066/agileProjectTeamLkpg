@@ -1,5 +1,5 @@
 #pragma once
-/*
+
 class Controller
 {
 private:
@@ -18,15 +18,17 @@ private:
     int maxSafetyDistance{};
 
 public:
-    AntiCrash::AntiCrash()
+    AntiCrash()
     {
     }
 
-    AntiCrash::~AntiCrash()
+    ~AntiCrash()
     {
+        /*
         delete distanceToObject;
         delete minSafetyDistance;
         delete maxSafetyDistance;
+        */
     }
 
     void checkDistance(int newReading)
@@ -44,14 +46,16 @@ private:
     int servoDirection{};
 
 public:
-    Steering::Steering()
+    Steering()
     {
     }
-    Steering::~Steering()
+    ~Steering()
     {
+        /*
         delete engineVelocity;
         delete engingeDirection;
         delete servoDirection;
+        */
     }
 
     void updateEngineVelocity(int newReading)
@@ -70,7 +74,6 @@ public:
 
         // IDEA: Map new reading with posible directions
         // IDEA: Update servoDIrection
+        
     }
 };
-
-*/
