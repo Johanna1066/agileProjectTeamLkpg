@@ -13,8 +13,8 @@ public:
 class USsensor : public Sensor
 {
 private:
-    int sensorTriggerPIN;
-    int sensorRecieverPIN;
+    int sensorTriggerDigitalPIN;
+    int sensorRecieverDigitalPIN;
 
     long distance{};
     long messurement{};
@@ -22,22 +22,22 @@ private:
 public:
     USsensor(int triggerPIN, int recieverPIN)
     {
-        sensorTriggerPIN = triggerPIN;
-        sensorRecieverPIN = recieverPIN;
+        sensorTriggerDigitalPIN = triggerPIN;
+        sensorRecieverDigitalPIN = recieverPIN;
         
     }
 
     void USsensorInitiate()
     {
-        pinMode(sensorTriggerPIN, OUTPUT);
-        pinMode(sensorRecieverPIN, INPUT);
+        pinMode(sensorTriggerDigitalPIN, OUTPUT);
+        pinMode(sensorRecieverDigitalPIN, INPUT);
     }
 
     ~USsensor()
     {
         /*
-        delete sensorTriggerPIN;
-        delete sensorRecieverPIN;
+        delete sensorTriggerDigitalPIN;
+        delete sensorRecieverDigitalPIN;
 
         delete distance;
         */
@@ -51,15 +51,15 @@ public:
 
     void readDistance()
     {
-        digitalWrite(sensorTriggerPIN, LOW);
+        digitalWrite(sensorTriggerDigitalPIN, LOW);
         delay(5);
-        digitalWrite(sensorTriggerPIN, HIGH);
+        digitalWrite(sensorTriggerDigitalPIN, HIGH);
         delay(10);
-        digitalWrite(sensorTriggerPIN, LOW);
+        digitalWrite(sensorTriggerDigitalPIN, LOW);
 
-        pinMode(sensorRecieverPIN, INPUT);
+        pinMode(sensorRecieverDigitalPIN, INPUT);
 
-        messurement = pulseIn(sensorRecieverPIN, HIGH);
+        messurement = pulseIn(sensorRecieverDigitalPIN, HIGH);
 
         distance = (messurement / 2) / 29.1;   //Convert distance to cm
     }

@@ -12,14 +12,16 @@ public:
 
 class AntiCrash : public Controller
 {
-private:
-    int distanceToObject{};
-    int minSafetyDistance{};
-    int maxSafetyDistance{};
+protected:
+    int currentDistance{};
+    int lastDistance{};
+    int stopDistance{};
+
 
 public:
-    AntiCrash()
+    AntiCrash(int defaultStopDistance)
     {
+        stopDistance = defaultStopDistance;
     }
 
     ~AntiCrash()
@@ -30,10 +32,26 @@ public:
         delete maxSafetyDistance;
         */
     }
-
-    void checkDistance(int newReading)
+    void updateDistance(int newDistance)
     {
+        lastDistance = currentDistance;
+        currentDistance = newDistance;
     }
+};
+
+class AntiCrashAhead : public AntiCrash
+{
+    private:
+    public:
+    bool stopVehicle()
+    {
+        if(lastDistance < stopDistance && currentDistance < stopDistance)
+        {
+            return true;
+        }
+        return false;
+    }
+
 };
 
 //-------Steering----------
