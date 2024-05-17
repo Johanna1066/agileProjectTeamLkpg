@@ -1,5 +1,5 @@
 #pragma once
-/*
+
 class Sensor
 {
 private:
@@ -14,22 +14,22 @@ public:
 class USsensor : public Sensor
 {
 private:
-    int sensorTriggerPIN;
-    int sensorRecieverPIN;
+    int sensorTriggerDigitalPIN;
+    int sensorRecieverDigitalPIN;
 
     int distance{};
 
 public:
     USsensor::USsensor(int triggerPIN, int recieverPIN)
     {
-        sensorTriggerPIN = triggerPIN;
-        sensorRecieverPIN = recieverPIN;
+        sensorTriggerDigitalPIN = triggerPIN;
+        sensorRecieverDigitalPIN = recieverPIN;
     }
 
     USsensor::~USsensor()
     {
-        delete sensorTriggerPIN;
-        delete sensorRecieverPIN;
+        delete sensorTriggerDigitalPIN;
+        delete sensorRecieverDigitalPIN;
 
         delete distance;
     }
@@ -54,9 +54,9 @@ public:
 class joyStick : public Sensor
 {
 private:
-    int joyStickVerticalPIN;
-    int joyStickHorizontalPIN;
-    int joyStickButtonPIN;
+    int joyStickVerticalAnalogPIN;
+    int joyStickHorizontalAnalogPIN;
+    int joyStickButtonDigitalPIN;
 
     int verticalValue{};
     int horizontalValue{};
@@ -65,20 +65,22 @@ private:
 public:
     joyStick::joyStick(int verticalPIN, int horizontalPIN, int buttonPIN)
     {
-        joyStickVerticalPIN = verticalPIN;
-        joyStickHorizontalPIN = horizontalPIN;
-        joyStickButtonPIN = buttonPIN;
+        joyStickVerticalAnalogPIN = verticalPIN;
+        joyStickHorizontalAnalogPIN = horizontalPIN;
+        joyStickButtonDigitalPIN = buttonPIN;
     }
 
     joyStick::~joyStick()
     {
-        delete joyStickButtonPIN;
-        delete joyStickHorizontalPIN;
-        delete joyStickButtonPIN;
+        /*
+        delete joyStickButtonDigitalPIN;
+        delete joyStickHorizontalAnalogPIN;
+        delete joyStickButtonDigitalPIN;
 
         delete verticalValue;
         delete horizontalValue;
         delete buttonValue;
+        */
     }
 
     void vertialRead()
@@ -95,4 +97,3 @@ public:
 
     // IDEA: Setup subscription function
 };
-*/
