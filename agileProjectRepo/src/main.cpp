@@ -11,14 +11,10 @@ std::vector<Engine> engines;
 Engine right(A1, D6, D5);
 Engine left(A2, D4, D3);
 
-
-
 void stopEngines();
 void setEnginesVelocity(int);
 
-
 USsensor mySensor(D9, D10);
-
 long reading;
 
 void setup()
