@@ -5,14 +5,3 @@
 #include "sensorClass.h"
 #include "observerClass.h"
 
-
-
-void setup()
-{
-
-}
-
-void loop()
-{
-
-}

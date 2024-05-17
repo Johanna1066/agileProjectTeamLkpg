@@ -1,19 +1,6 @@
-#pragma once
-
-class Motor
-{
-private:
-public:
-    void forwardData();
-};
-
-void Motor::forwardData()
-{
-}
-
 //----------Engine class---------------
 
-class Engine : public Motor
+class Engine
 {
 private:
     int engineVelocityPIN{};
@@ -66,7 +53,7 @@ public:
 
 //---------Servo class---------------
 
-class Servo : public Motor
+class Servo
 {
 private:
     // TODO: Add PINs
