@@ -16,9 +16,9 @@ void Motor::forwardData()
 class Engine : public Motor
 {
 private:
-    int engineVelocityPIN{};
-    int enginePositivePIN{};
-    int engineNegativePIN{};
+    int engineVelocityAnalogPIN{};
+    int enginePositiveDigitalPIN{};
+    int engineNegativeDigitalPIN{};
 
     int velocity{};
     bool direction{}; // true = forward, false = backwards
@@ -26,16 +26,22 @@ private:
 public:
     Engine(int velocityPIN, int positivePIN, int negativePIN)
     {
-        engineVelocityPIN = velocityPIN;
-        enginePositivePIN = positivePIN;
-        engineNegativePIN = negativePIN;
+        engineVelocityAnalogPIN = velocityPIN;
+        enginePositiveDigitalPIN = positivePIN;
+        engineNegativeDigitalPIN = negativePIN;
+
+        pinMode(engineVelocityAnalogPIN, OUTPUT);
+        pinMode(enginePositiveDigitalPIN, OUTPUT);
+        pinMode(engineNegativeDigitalPIN, OUTPUT);
+        digitalWrite(enginePositiveDigitalPIN, LOW);
+        digitalWrite(engineNegativeDigitalPIN, HIGH);
     }
 
     ~Engine()
     {
-        /*delete engineVelocityPIN;
-        delete enginePositivePIN;
-        delete engineNegativePIN;
+        /*delete engineVelocityAnalogPIN;
+        delete enginePositiveDigitalPIN;
+        delete engineNegativeDigitalPIN;
 
         delete velocity;
         delete direction;*/
@@ -43,41 +49,36 @@ public:
 
     void setVelocity(int newVelocity)
     {
-        analogWrite(engineVelocityPIN, newVelocity);
+        analogWrite(engineVelocityAnalogPIN, newVelocity);
     }
 
-    void intitateEngine()
-    {
-        pinMode(engineVelocityPIN, OUTPUT);
-        pinMode(enginePositivePIN, OUTPUT);
-        pinMode(engineNegativePIN, OUTPUT);
-        digitalWrite(enginePositivePIN, LOW);
-        digitalWrite(engineNegativePIN, HIGH);
-    }
     void directionReverse()
     {
         // May change depending on connection to enginedriver hardware
         // IDEA: add if- depending on bool diretion.
 
-        digitalWrite(enginePositivePIN, LOW);
-        digitalWrite(engineNegativePIN, HIGH);
+        digitalWrite(enginePositiveDigitalPIN, LOW);
+        digitalWrite(engineNegativeDigitalPIN, HIGH);
     }
 };
 
 //---------Servo class---------------
 
-class Servo : public Motor
+class engineServo : public Motor
 {
 private:
-    // TODO: Add PINs
     int direction{};
 
+    Servo myServo;
+
 public:
-    Servo()
+    engineServo(int engineServoPIN,int startDirection)
     {
+        myServo.attach(engineServoPIN);
+        myServo.write(startDirection);
     }
 
-    ~Servo()
+    ~engineServo()
     {
         // delete direction;
     }
@@ -85,5 +86,27 @@ public:
     void setDirection(int newDirection)
     {
         // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
+        myServo.write(newDirection);
+        direction = newDirection;
+
+
+        /*
+        Maybe something like this to move turning in tiny steps
+
+        int currentPosition = myServo.read();
+
+        if(newDirection > direction && minTurn > direction)
+        {
+            direction--;
+            myServo.write(direction);
+            delay(10;)
+        }
+        if else(newDirection < direction && maxTurn < direction)
+        {
+            direction++;
+            myServo.write(direction);
+            delay(10);
+        }
+        */
     }
 };
