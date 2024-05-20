@@ -5,17 +5,16 @@
 #include "sensorClass.h"
 // #include "observerClass.h"
 
-
 std::vector<Engine> engines;
 
 Engine right(A1, D6, D5);
 Engine left(A2, D4, D3);
 
-void stopEngines();
-void setEnginesVelocity(int);
-
 USsensor mySensor(D9, D10);
 long reading;
+
+void stopEngines();
+void setEnginesVelocity(int);
 
 void setup()
 {
@@ -25,16 +24,15 @@ void setup()
   right.intitateEngine();
   left.intitateEngine();
   mySensor.USsensorInitiate();
-
 }
 
 void loop()
 {
-  
+
   mySensor.readDistance();
   reading = mySensor.getDistance();
 
-  if(reading < 20)
+  if (reading < 20)
   {
     stopEngines();
   }
@@ -42,12 +40,11 @@ void loop()
   {
     setEnginesVelocity(255);
   }
-
 }
 
 void stopEngines()
 {
-  for (auto &engine : engines) 
+  for (auto &engine : engines)
   {
     engine.setVelocity(0);
   }
@@ -55,9 +52,8 @@ void stopEngines()
 
 void setEnginesVelocity(int velocity)
 {
-  for (auto &engine : engines) 
+  for (auto &engine : engines)
   {
     engine.setVelocity(velocity);
   }
 }
-
