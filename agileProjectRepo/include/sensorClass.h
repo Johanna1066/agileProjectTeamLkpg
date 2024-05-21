@@ -1,12 +1,9 @@
 #pragma once
-/*
+
 class Sensor
 {
 private:
-
 public:
-    Sensor();
-    ~Sensor();
 };
 
 //------USSensor---------
@@ -17,33 +14,50 @@ private:
     int sensorTriggerPIN;
     int sensorRecieverPIN;
 
-    int distance{};
+    long distance{};
+    long messurement{};
 
 public:
-    USsensor::USsensor(int triggerPIN, int recieverPIN)
+    USsensor(int triggerPIN, int recieverPIN)
     {
         sensorTriggerPIN = triggerPIN;
         sensorRecieverPIN = recieverPIN;
     }
 
-    USsensor::~USsensor()
+    void USsensorInitiate()
     {
+        pinMode(sensorTriggerPIN, OUTPUT);
+        pinMode(sensorRecieverPIN, INPUT);
+    }
+
+    ~USsensor()
+    {
+        /*
         delete sensorTriggerPIN;
         delete sensorRecieverPIN;
 
         delete distance;
+        */
     }
 
-    void setDistance()
+    long getDistance()
     {
-    }
-
-    void initiateSensor()
-    {
+        return distance;
     }
 
     void readDistance()
     {
+        digitalWrite(sensorTriggerPIN, LOW);
+        delay(5);
+        digitalWrite(sensorTriggerPIN, HIGH);
+        delay(10);
+        digitalWrite(sensorTriggerPIN, LOW);
+
+        pinMode(sensorRecieverPIN, INPUT);
+
+        messurement = pulseIn(sensorRecieverPIN, HIGH);
+
+        distance = (messurement / 2) / 29.1; // Convert distance to cm
     }
 
     // IDEA: Setup subscription function
@@ -54,24 +68,25 @@ public:
 class joyStick : public Sensor
 {
 private:
-    int joyStickVerticalPIN;
-    int joyStickHorizontalPIN;
-    int joyStickButtonPIN;
+    int joyStickVerticalPIN{};
+    int joyStickHorizontalPIN{};
+    int joyStickButtonPIN{};
 
     int verticalValue{};
     int horizontalValue{};
     int buttonValue{};
 
 public:
-    joyStick::joyStick(int verticalPIN, int horizontalPIN, int buttonPIN)
+    joyStick(int verticalPIN, int horizontalPIN, int buttonPIN)
     {
         joyStickVerticalPIN = verticalPIN;
         joyStickHorizontalPIN = horizontalPIN;
         joyStickButtonPIN = buttonPIN;
     }
 
-    joyStick::~joyStick()
+    ~joyStick()
     {
+        /*
         delete joyStickButtonPIN;
         delete joyStickHorizontalPIN;
         delete joyStickButtonPIN;
@@ -79,6 +94,7 @@ public:
         delete verticalValue;
         delete horizontalValue;
         delete buttonValue;
+        */
     }
 
     void vertialRead()
@@ -95,4 +111,3 @@ public:
 
     // IDEA: Setup subscription function
 };
-*/
