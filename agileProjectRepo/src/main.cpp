@@ -1,8 +1,14 @@
 #include <Arduino.h>
 #include <iostream>
 #include <vector>
-#include "motorClass.h"
+
+#include "Engine.h"
+#include "SteeringServo.h"
+#include "Joystick.h"
+#include "USsensor.h"
 #include "sensorClass.h"
+#include "steeringFunctions.h"
+
 std::vector<Engine> engines;
 
 Engine right(A1, D6, D5);
@@ -37,21 +43,5 @@ void loop()
   else
   {
     setEnginesVelocity(255);
-  }
-}
-
-void stopEngines()
-{
-  for (auto &engine : engines)
-  {
-    engine.setVelocity(0);
-  }
-}
-
-void setEnginesVelocity(int velocity)
-{
-  for (auto &engine : engines)
-  {
-    engine.setVelocity(velocity);
   }
 }
