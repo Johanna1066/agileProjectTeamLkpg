@@ -82,12 +82,22 @@ private:
     int horizontalValue{};
     int buttonValue{};
 
+    int centerHorizontalValue{};
+    int centerVerticalValue{};
+
 public:
     joyStick(int verticalPIN, int horizontalPIN, int buttonPIN)
     {
         joyStickVerticalPIN = verticalPIN;
         joyStickHorizontalPIN = horizontalPIN;
         joyStickButtonPIN = buttonPIN;
+
+        pinMode(joyStickVerticalPIN, INPUT);
+        pinMode(joyStickHorizontalPIN, INPUT);
+        pinMode(joyStickButtonPIN, INPUT);
+
+        centerHorizontalValue = analogRead(joyStickHorizontalPIN);
+        centerVerticalValue = analogRead(joyStickVerticalPIN);
     }
 
     ~joyStick()
@@ -105,16 +115,30 @@ public:
 
     void vertialRead()
     {
+        verticalValue = analogRead(joyStickVerticalPIN);
 
+        if((centerVerticalValue - 100) <= verticalValue && verticalValue <= (centerVerticalValue + 100))
+        {
+            Serial.println("joystick:verticalRead Y axis center.");
+        }
+        else if(centerVerticalValue > verticalValue)
+        {
+            Serial.println("joystick:verticalRead Y axis < centerVerticalValue. \nY = %d", verticalValue);
+        }
+        else if(centerVerticalValue < verticalValue)
+        {
+            Serial.println("joystick:verticalRead Y axis > centerVerticalValue. \nY = %d", verticalValue);
+        }
     }
 
     void horizontalRead()
     {
-
+        //Copy paste from vertical read and remake to fit horizontal
     }
 
     void buttonRead()
     {
+        //TODO: if we use the button on Joystick
     }
 
     // IDEA: Setup subscription function
