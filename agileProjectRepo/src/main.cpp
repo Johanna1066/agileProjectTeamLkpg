@@ -2,32 +2,19 @@
 #include <iostream>
 #include <vector>
 
-#include "Engine.h"
-#include "SteeringServo.h"
-#include "Joystick.h"
-#include "USsensor.h"
-#include "sensorClass.h"
+#include "Motors/Engine.h"
+#include "Motors/SteeringServo.h"
+#include "Sensors/Joystick.h"
+#include "Sensors/USsensor.h"
 #include "steeringFunctions.h"
-
-std::vector<Engine> engines;
-
-Engine right(A1, D6, D5);
-Engine left(A2, D4, D3);
-
-USsensor mySensor(D9, D10);
-long reading;
 
 void stopEngines();
 void setEnginesVelocity(int);
+void initate();
 
 void setup()
 {
-  engines.push_back(left);
-  engines.push_back(right);
-
-  right.intitateEngine();
-  left.intitateEngine();
-  mySensor.USsensorInitiate();
+  initiate();
 }
 
 void loop()
