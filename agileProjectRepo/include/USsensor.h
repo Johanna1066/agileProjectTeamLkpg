@@ -1,14 +1,7 @@
 #pragma once
-
-class Sensor
-{
-private:
-public:
-};
-
 //------USSensor---------
 
-class USsensor : public Sensor
+class USsensor
 {
 private:
     int sensorTriggerPIN;
@@ -22,9 +15,10 @@ public:
     {
         sensorTriggerPIN = triggerPIN;
         sensorRecieverPIN = recieverPIN;
+        this->initiateUSsensor();
     }
 
-    void USsensorInitiate()
+    void initiateUSsensor()
     {
         pinMode(sensorTriggerPIN, OUTPUT);
         pinMode(sensorRecieverPIN, INPUT);
@@ -47,6 +41,8 @@ public:
 
     void readDistance()
     {
+        // TODO: Can we remove or change theese delays in some way?
+        // We don't want to hard code in delays
         digitalWrite(sensorTriggerPIN, LOW);
         delay(5);
         digitalWrite(sensorTriggerPIN, HIGH);
@@ -58,55 +54,6 @@ public:
         messurement = pulseIn(sensorRecieverPIN, HIGH);
 
         distance = (messurement / 2) / 29.1; // Convert distance to cm
-    }
-
-    // IDEA: Setup subscription function
-};
-
-//------Joystick---------
-
-class joyStick : public Sensor
-{
-private:
-    int joyStickVerticalPIN{};
-    int joyStickHorizontalPIN{};
-    int joyStickButtonPIN{};
-
-    int verticalValue{};
-    int horizontalValue{};
-    int buttonValue{};
-
-public:
-    joyStick(int verticalPIN, int horizontalPIN, int buttonPIN)
-    {
-        joyStickVerticalPIN = verticalPIN;
-        joyStickHorizontalPIN = horizontalPIN;
-        joyStickButtonPIN = buttonPIN;
-    }
-
-    ~joyStick()
-    {
-        /*
-        delete joyStickButtonPIN;
-        delete joyStickHorizontalPIN;
-        delete joyStickButtonPIN;
-
-        delete verticalValue;
-        delete horizontalValue;
-        delete buttonValue;
-        */
-    }
-
-    void vertialRead()
-    {
-    }
-
-    void horizontalRead()
-    {
-    }
-
-    void buttonRead()
-    {
     }
 
     // IDEA: Setup subscription function

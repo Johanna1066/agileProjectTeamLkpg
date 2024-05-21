@@ -1,6 +1,4 @@
-
-//----------Engine class---------------
-
+#pragma once
 
 class Engine
 {
@@ -18,16 +16,11 @@ public:
         engineVelocityPIN = velocityPIN;
         enginePositivePIN = positivePIN;
         engineNegativePIN = negativePIN;
+        this->intitateEngine();
     }
 
     ~Engine()
     {
-        /*delete engineVelocityPIN;
-        delete enginePositivePIN;
-        delete engineNegativePIN;
-
-        delete velocity;
-        delete direction;*/
     }
 
     void setVelocity(int newVelocity)
@@ -50,31 +43,5 @@ public:
 
         digitalWrite(enginePositivePIN, LOW);
         digitalWrite(engineNegativePIN, HIGH);
-    }
-};
-
-
-//---------Servo class---------------
-
-class Servo
-
-{
-private:
-    // TODO: Add PINs
-    int direction{};
-
-public:
-    Servo()
-    {
-    }
-
-    ~Servo()
-    {
-        // delete direction;
-    }
-
-    void setDirection(int newDirection)
-    {
-        // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
     }
 };
