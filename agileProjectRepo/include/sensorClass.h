@@ -65,7 +65,8 @@ public:
 
 //------Joystick---------
 
-class joyStick : public Sensor
+
+class joystick : public Sensor
 {
 private:
     int joyStickVerticalPIN{};
@@ -76,15 +77,19 @@ private:
     int horizontalValue{};
     int buttonValue{};
 
+    int centerHorizontalValue{};
+    int centerVerticalValue{};
+
 public:
-    joyStick(int verticalPIN, int horizontalPIN, int buttonPIN)
+    joystick(int verticalPIN, int horizontalPIN, int buttonPIN)
     {
         joyStickVerticalPIN = verticalPIN;
         joyStickHorizontalPIN = horizontalPIN;
         joyStickButtonPIN = buttonPIN;
     }
 
-    ~joyStick()
+
+    ~joystick()
     {
         /*
         delete joyStickButtonPIN;
@@ -97,16 +102,71 @@ public:
         */
     }
 
+    void joystickInitiate()
+    {
+
+        pinMode(joyStickVerticalPIN, INPUT);
+        pinMode(joyStickHorizontalPIN, INPUT);
+        pinMode(joyStickButtonPIN, INPUT);
+
+        centerHorizontalValue = analogRead(joyStickHorizontalPIN);
+        centerVerticalValue = analogRead(joyStickVerticalPIN);
+    
+    }
+
     void vertialRead()
     {
+        verticalValue = analogRead(joyStickVerticalPIN);
+
+        return; //tmp for task
+
+        if((centerVerticalValue - 100) <= verticalValue && verticalValue <= (centerVerticalValue + 100))
+        {
+            //Serial.println("joystick:verticalRead Y axis center.");
+        }
+        else if(centerVerticalValue > verticalValue)
+        {
+            //Serial.printf("joystick:verticalRead Y axis < centerVerticalValue. \nY = %d \n", verticalValue);
+        }
+        else if(centerVerticalValue < verticalValue)
+        {
+            //Serial.printf("joystick:verticalRead Y axis > centerVerticalValue. \nY = %d \n", verticalValue);
+        }
     }
 
     void horizontalRead()
     {
+        horizontalValue = analogRead(joyStickVerticalPIN);
+
+        return; //tmp for task
+
+        if((centerHorizontalValue - 100) <= horizontalValue && horizontalValue <= (centerHorizontalValue + 100))
+        {
+            //Serial.println("joystick:verticalRead Y axis center.");
+        }
+        else if(centerHorizontalValue > horizontalValue)
+        {
+            //Serial.printf("joystick:verticalRead Y axis < centerHorizontalValue. \nY = %d \n", horizontalValue);
+        }
+        else if(centerHorizontalValue < horizontalValue)
+        {
+            //Serial.printf("joystick:verticalRead Y axis > centerHorizontalValue. \nY = %d \n", horizontalValue);
+        }
+    }
+
+    int getHorizontalValue()
+    {
+        return horizontalValue;
+    }
+
+    int getVerticalValue()
+    {
+        return verticalValue;
     }
 
     void buttonRead()
     {
+        //TODO: if we use the button on Joystick
     }
 
     // IDEA: Setup subscription function
