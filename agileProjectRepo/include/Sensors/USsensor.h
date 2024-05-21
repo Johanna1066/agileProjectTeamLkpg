@@ -11,12 +11,10 @@ private:
     long messurement{};
 
 public:
-
     USsensor(int triggerPIN, int recieverPIN)
     {
         sensorTriggerPIN = triggerPIN;
         sensorRecieverPIN = recieverPIN;
-        
     }
 
     ~USsensor()
@@ -55,6 +53,8 @@ public:
         messurement = pulseIn(sensorRecieverPIN, HIGH);
 
         distance = (messurement / 2) / 29.1; // Convert distance to cm
+
+        return;
     }
 
     // IDEA: Setup subscription function

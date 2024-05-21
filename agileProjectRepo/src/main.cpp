@@ -12,14 +12,23 @@ void stopEngines();
 void setEnginesVelocity(int);
 void initate();
 
-long reading1{};
-
-void functionCaller(void *parameters)
+void readSensor(void *parameters)
 {
+  for (;;)
+  {
+    mySensor.taskReadDistance();
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+  }
+}
 
-  mySensor.readDistance();
-  vTaskDelay(100 / portTICK_PERIOD_MS);
-
+void printSensorReading(void *parameters)
+{
+  for (;;)
+  {
+    reading = mySensor.getDistance();
+    Serial.println(reading);
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+  }
 }
 
 void setup()
@@ -28,18 +37,24 @@ void setup()
   mySensor.initiateUSsensor();
 
   xTaskCreate(
-      functionCaller,      // Function name
-      "*taskReadDistance", // Task name
-      1000,                // Stack size
-      NULL,                // Task parameters
-      1,                   // Task priority
-      NULL                 // Task handle
+      readSensor,    // Function name
+      "*readSensor", // Task name
+      2000,          // Stack size
+      NULL,          // Task parameters
+      1,             // Task priority
+      NULL           // Task handle
+  );
+
+  xTaskCreate(
+      printSensorReading,    // Function name
+      "*printSensorReading", // Task name
+      2000,                  // Stack size
+      NULL,                  // Task parameters
+      1,                     // Task priority
+      NULL                   // Task handle
   );
 }
 
-
 void loop()
 {
-  reading1 = mySensor.getDistance();
-  Serial.println(reading1);
 }
