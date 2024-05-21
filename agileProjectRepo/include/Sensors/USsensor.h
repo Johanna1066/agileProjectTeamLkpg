@@ -11,17 +11,12 @@ private:
     long messurement{};
 
 public:
+
     USsensor(int triggerPIN, int recieverPIN)
     {
         sensorTriggerPIN = triggerPIN;
         sensorRecieverPIN = recieverPIN;
-        this->initiateUSsensor();
-    }
-
-    void initiateUSsensor()
-    {
-        pinMode(sensorTriggerPIN, OUTPUT);
-        pinMode(sensorRecieverPIN, INPUT);
+        
     }
 
     ~USsensor()
@@ -32,6 +27,12 @@ public:
 
         delete distance;
         */
+    }
+
+    void initiateUSsensor()
+    {
+        pinMode(sensorTriggerPIN, OUTPUT);
+        pinMode(sensorRecieverPIN, INPUT);
     }
 
     long getDistance()
@@ -57,4 +58,21 @@ public:
     }
 
     // IDEA: Setup subscription function
+
+    void taskReadDistance()
+    {
+        // TODO: Can we remove or change theese delays in some way?
+        // We don't want to hard code in delays
+        digitalWrite(sensorTriggerPIN, LOW);
+        vTaskDelay(5 / portTICK_PERIOD_MS);
+        digitalWrite(sensorTriggerPIN, HIGH);
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+        digitalWrite(sensorTriggerPIN, LOW);
+
+        pinMode(sensorRecieverPIN, INPUT);
+
+        messurement = pulseIn(sensorRecieverPIN, HIGH);
+
+        distance = (messurement / 2) / 29.1; // Convert distance to cm
+    }
 };

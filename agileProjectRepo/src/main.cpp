@@ -12,23 +12,34 @@ void stopEngines();
 void setEnginesVelocity(int);
 void initate();
 
-void setup()
-{
-  initiate();
-}
+long reading1{};
 
-void loop()
+void functionCaller(void *parameters)
 {
 
   mySensor.readDistance();
-  reading = mySensor.getDistance();
+  vTaskDelay(100 / portTICK_PERIOD_MS);
 
-  if (reading < 20)
-  {
-    stopEngines();
-  }
-  else
-  {
-    setEnginesVelocity(255);
-  }
+}
+
+void setup()
+{
+  Serial.begin(9600);
+  mySensor.initiateUSsensor();
+
+  xTaskCreate(
+      functionCaller,      // Function name
+      "*taskReadDistance", // Task name
+      1000,                // Stack size
+      NULL,                // Task parameters
+      1,                   // Task priority
+      NULL                 // Task handle
+  );
+}
+
+
+void loop()
+{
+  reading1 = mySensor.getDistance();
+  Serial.println(reading1);
 }
