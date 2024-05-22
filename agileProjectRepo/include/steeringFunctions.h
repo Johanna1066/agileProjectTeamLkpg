@@ -7,6 +7,7 @@ Engine left(A2, D4, D3);
 
 USsensor mySensor(D9, D10);
 long reading;
+bool hinderForwardMovement = false;
 
 void initiate()
 {

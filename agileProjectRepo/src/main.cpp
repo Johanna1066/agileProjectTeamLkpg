@@ -14,23 +14,32 @@ void stopEngines();
 void setEnginesVelocity(int);
 void initiate(); 
 
+
+
 void readSensor(void *parameters)
 {
   for (;;)
   {
     mySensor.taskReadDistance();
-    // if case here
-    if (mySensor.getDistance() < 20)
-    {
-      stopEngines();
-      Serial.println("STOP!");
-    }
+
+      if (mySensor.getDistance() < 20) //make function
+      {
+        stopEngines();
+        Serial.println("STOP!");
+        hinderForwardMovement = true;
+        //add connect to enginevelocity
+      }
+      else 
+      {
+        hinderForwardMovement = false;
+      }                               //--------------
     
     vTaskDelay(100 / portTICK_PERIOD_MS);
     
     //Send radio Signal here
   }
 }
+
 /*
 void printSensorReading(void *parameters)
 {
