@@ -116,42 +116,16 @@ public:
 
     void vertialRead()
     {
-        verticalValue = analogRead(joyStickVerticalPIN);
-
-        return; //tmp for task
-
-        if((centerVerticalValue - 100) <= verticalValue && verticalValue <= (centerVerticalValue + 100))
-        {
-            //Serial.println("joystick:verticalRead Y axis center.");
-        }
-        else if(centerVerticalValue > verticalValue)
-        {
-            //Serial.printf("joystick:verticalRead Y axis < centerVerticalValue. \nY = %d \n", verticalValue);
-        }
-        else if(centerVerticalValue < verticalValue)
-        {
-            //Serial.printf("joystick:verticalRead Y axis > centerVerticalValue. \nY = %d \n", verticalValue);
-        }
+        int reading = analogRead(joyStickVerticalPIN);
+        verticalValue = map(reading, 0, 4092, 0, 2);
     }
 
     void horizontalRead()
     {
-        horizontalValue = analogRead(joyStickVerticalPIN);
-
-        return; //tmp for task
-
-        if((centerHorizontalValue - 100) <= horizontalValue && horizontalValue <= (centerHorizontalValue + 100))
-        {
-            //Serial.println("joystick:verticalRead Y axis center.");
-        }
-        else if(centerHorizontalValue > horizontalValue)
-        {
-            //Serial.printf("joystick:verticalRead Y axis < centerHorizontalValue. \nY = %d \n", horizontalValue);
-        }
-        else if(centerHorizontalValue < horizontalValue)
-        {
-            //Serial.printf("joystick:verticalRead Y axis > centerHorizontalValue. \nY = %d \n", horizontalValue);
-        }
+        int reading = analogRead(joyStickVerticalPIN);
+        Serial.printf("joystickVertical = %d \n", reading);
+        horizontalValue = map(reading, 0, 4095, 0, 2);
+        //Switch case istället för map?
     }
 
     int getHorizontalValue()
