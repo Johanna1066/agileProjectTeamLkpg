@@ -3,12 +3,12 @@
 #include <vector>
 
 
+
 #include "Motors/Engine.h"
 #include "Motors/SteeringServo.h"
 #include "Sensors/Joystick.h"
 #include "Sensors/USsensor.h"
 #include "steeringFunctions.h"
-
 
 void stopEngines();
 void setEnginesVelocity(int);
@@ -19,10 +19,19 @@ void readSensor(void *parameters)
   for (;;)
   {
     mySensor.taskReadDistance();
+    // if case here
+    if (mySensor.getDistance() < 20)
+    {
+      stopEngines();
+      Serial.println("STOP!");
+    }
+    
     vTaskDelay(100 / portTICK_PERIOD_MS);
+    
+    //Send radio Signal here
   }
 }
-
+/*
 void printSensorReading(void *parameters)
 {
   for (;;)
@@ -31,34 +40,7 @@ void printSensorReading(void *parameters)
       Serial.println(reading);
       vTaskDelay(500 / portTICK_PERIOD_MS);
   }
-}
-
-
-//TaskState Testing
-eTaskState hej{};
-TaskHandle_t readSensorHandle;
-TaskStatus_t xTaskDetails;
-
-void sendRadioSignal(void *parameters) //Testing 
-{
-  for (;;)
-  {
-   
-   
-    // Task Status Test
-    
-
-    readSensorHandle = xTaskGetHandle("*readSensor");
-    configASSERT(readSensorHandle);
-    vTaskGetInfo(readSensorHandle, &xTaskDetails, pdTRUE, eInvalid);
-    //-------------------
-    hej = xTaskDetails.eCurrentState;
-    Serial.println(hej);
-    
-  }
-}
-
-//--------------------------
+}*/
 
 
 void setup()
@@ -72,9 +54,9 @@ void setup()
       1000,          // Stack size
       NULL,          // Task parameters
       1,             // Task priority
-      &readSensorHandle           // Task handle
+      NULL           // Task handle
   );
-
+/*
   xTaskCreate(
       printSensorReading,    // Function name
       "*printSensorReading", // Task name
@@ -82,9 +64,10 @@ void setup()
       NULL,                  // Task parameters
       1,                     // Task priority
       NULL                   // Task handle
-  );
+  );*/
 }
 
 void loop()
 {
+  
 }
