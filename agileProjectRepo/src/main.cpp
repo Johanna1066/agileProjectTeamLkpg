@@ -1,33 +1,24 @@
 #include <Arduino.h>
 #include <iostream>
-#include <vector>
 
-
-#include "motorClass.h"
 #include "sensorClass.h"
-#include "observerClass.h"
 
-USsensor testSensor(D2, D3);
-//AntiCrashAhead testCrash(20);
-std::vector <AntiCrash> testCrashObjects;
-AntiCrash* tmp;
+int delayTime = 1000;
 
-
+joyStick testJoystick(A3, A4, 5);
 
 
 void setup()
 {
     Serial.begin(9600);
-    testSensor.USsensorInitiate();
-    for(int i = 0; i < 10; i++)
-{
-    tmp = new AntiCrash(20);
-    testCrashObjects.push_back(*tmp);
-}
+    testJoystick.initiateJoystick();
+
 }
 
 void loop()
 {
-    testSensor.readDistance();
-    
+    testJoystick.vertialRead();
+    delay(delayTime);
+    testJoystick.horizontalRead();
+    delay(delayTime);
 }

@@ -91,13 +91,6 @@ public:
         joyStickVerticalPIN = verticalPIN;
         joyStickHorizontalPIN = horizontalPIN;
         joyStickButtonPIN = buttonPIN;
-
-        pinMode(joyStickVerticalPIN, INPUT);
-        pinMode(joyStickHorizontalPIN, INPUT);
-        pinMode(joyStickButtonPIN, INPUT);
-
-        centerHorizontalValue = analogRead(joyStickHorizontalPIN);
-        centerVerticalValue = analogRead(joyStickVerticalPIN);
     }
 
     ~joyStick()
@@ -113,6 +106,16 @@ public:
         */
     }
 
+    void initiateJoystick()
+    {
+        pinMode(joyStickVerticalPIN, INPUT);
+        pinMode(joyStickHorizontalPIN, INPUT);
+        pinMode(joyStickButtonPIN, INPUT);
+
+        centerHorizontalValue = analogRead(joyStickHorizontalPIN);
+        centerVerticalValue = analogRead(joyStickVerticalPIN);
+    }
+
     void vertialRead()
     {
         verticalValue = analogRead(joyStickVerticalPIN);
@@ -123,17 +126,30 @@ public:
         }
         else if(centerVerticalValue > verticalValue)
         {
-            Serial.println("joystick:verticalRead Y axis < centerVerticalValue. \nY = %d", verticalValue);
+            Serial.printf("joystick:verticalRead Y axis < centerVerticalValue. \nY = %d \n", verticalValue);
         }
         else if(centerVerticalValue < verticalValue)
         {
-            Serial.println("joystick:verticalRead Y axis > centerVerticalValue. \nY = %d", verticalValue);
+            Serial.printf("joystick:verticalRead Y axis > centerVerticalValue. \nY = %d \n", verticalValue);
         }
     }
 
     void horizontalRead()
     {
-        //Copy paste from vertical read and remake to fit horizontal
+        horizontalValue = analogRead(joyStickHorizontalPIN);
+
+        if((centerHorizontalValue - 100) <= horizontalValue && horizontalValue <= (centerHorizontalValue + 100))
+        {
+            Serial.println("joystick:horizontalRead X axis center.");
+        }
+        else if(centerHorizontalValue > horizontalValue)
+        {
+            Serial.printf("joystick:horizontalRead X axis < centerHorizontalValue. \nX = %d \n", horizontalValue);
+        }
+        else if(centerHorizontalValue < horizontalValue)
+        {
+            Serial.printf("joystick:horizontalRead X axis > centerHorizontalValue. \nX = %d \n", horizontalValue);
+        }
     }
 
     void buttonRead()
