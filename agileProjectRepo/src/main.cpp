@@ -42,7 +42,7 @@ void setup()
   Serial.begin(9600);
   //DIS_SENSOR_INST.setupDistSensor();
   radioSend = NRF_INST_SEND.setupNRF();
-  radioRecieve = NRF_INST_RECIEVE.setupNRF();
+  //radioRecieve = NRF_INST_RECIEVE.setupNRF();
   //JOY_INST.setupSwJoy();
   //L298_INST.L298_Setup();
   //SERVO_M_INST.servo_setup();
@@ -51,23 +51,22 @@ void setup()
 void loop()
 {
 
-  NRF_INST_RECIEVE.recievePacket(recieve_packet, 4, radioRecieve);
+  //NRF_INST_RECIEVE.recievePacket(recieve_packet, 4, radioRecieve);
   //int distance = DIS_SENSOR_INST.readFromDistSensor();
-  Serial.println(12345);
+  //Serial.println(12345);
   //JOY_INST.readJoy(xValue, yValue, region);
   //JOY_INST.readSW_joy(lift);
   //L298_INST.L298_WriteData(1, 0, 100, 200);
   //SERVO_M_INST.servo_writeData(ServoMotor, 20);
 
-  send_packet[0] = xValue;
-  send_packet[1] = yValue;
-  send_packet[2] = region;
-  send_packet[3] = lift;
+  send_packet[0] = 'A';
+  send_packet[1] = 'B';
+  send_packet[2] = 'C';
+  send_packet[3] = 'D';
 
-  counter_wait++;
 
-  if(counter_wait == 100){
+
+
     NRF_INST_SEND.sendPacket(send_packet, 16, radioSend);
-    counter_wait = 0;
-  }
+    delay(1500);
 }
