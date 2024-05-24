@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <iostream>
 #include <vector>
+
 #include "semphr.h"
 
 
@@ -58,10 +59,12 @@ void myFunctionPrint(void *parameter){
         }
         vTaskDelay(1000);
     }
+
 }
 
 void loop()
 {
+
 
   
 }
