@@ -1,24 +1,23 @@
 #include <Arduino.h>
 #include <iostream>
+#include <ESP32Servo.h>
 
 #include "motorClass.h"
-// #include "sensorClass.h"
-// #include "observerClass.h"
 
-Engine right(A1, D6, D5);
-engineServo carStearing(A2, 90);  //just tmp code
+//orange cabel is pin cable, digital
+engineServo carStearing(9);
 
 void setup()
 {
-  right.intitateEngine();
+  carStearing.ServoInitiate();
 }
 
 void loop()
 {
-  carStearing.setDirection(115);
-  right.setVelocity(255);
+  carStearing.setDirection(0);
+
   delay(5000);
-  carStearing.setDirection(75);
-  right.setVelocity(0);
+  carStearing.setDirection(120);
+
   delay(5000);
 }
