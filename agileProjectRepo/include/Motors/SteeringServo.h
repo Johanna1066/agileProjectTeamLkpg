@@ -1,5 +1,5 @@
+#pragma once
 #include <ESP32Servo.h>
-#include "steeringFunctions.h"
 
 
 class SteeringServo
@@ -11,23 +11,32 @@ private:
     Servo myServo;
 
 public:
-    SteeringServo(int engineServoPIN)
+    SteeringServo(int engineServoPIN);
+
+    ~SteeringServo();
+
+    void initiateServo();
+
+    void setDirection(int newDirection);
+};
+
+    SteeringServo::SteeringServo(int engineServoPIN)
     {
         servoPIN = engineServoPIN;
     }
 
-    ~SteeringServo()
+    SteeringServo::~SteeringServo()
     {
         // delete direction;
     }
 
-    void ServoInitiate()
+    void SteeringServo::initiateServo()
     {
         myServo.attach(servoPIN);
        // myServo.setPeriodHertz(50);
     }
 
-    void setDirection(int newDirection)
+    void SteeringServo::setDirection(int newDirection)
     {
         // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
         myServo.write(newDirection);
@@ -52,4 +61,3 @@ public:
         }
         */
     }
-};

@@ -10,12 +10,13 @@
 #include "Sensors/USsensor.h"
 #include "steeringFunctions.h"
 
+
 void stopEngines();
 void setEnginesVelocity(int);
 void initiate(); 
 
 
-
+/*
 void readSensor(void *parameters)
 {
   for (;;)
@@ -40,7 +41,7 @@ void readSensor(void *parameters)
   }
 }
 
-/*
+
 void printSensorReading(void *parameters)
 {
   for (;;)
@@ -52,11 +53,15 @@ void printSensorReading(void *parameters)
 }*/
 
 
+
+
+
 void setup()
 {
   initiate();
   Serial.begin(9600);
-
+  myServo.initiateServo();
+  /*
   xTaskCreate(
       readSensor,    // Function name
       "*readSensor", // Task name
@@ -64,7 +69,9 @@ void setup()
       NULL,          // Task parameters
       1,             // Task priority
       NULL           // Task handle
+      
   );
+  */
 /*
   xTaskCreate(
       printSensorReading,    // Function name
@@ -78,5 +85,15 @@ void setup()
 
 void loop()
 {
-  
+  stick.horizontalRead();
+
+  myServo.setDirection(0);
+
+  delay(1000);
+  myServo.setDirection(60);
+
+  delay(4000);
+
+  myServo.setDirection(120);
+  delay(1000);
 }
