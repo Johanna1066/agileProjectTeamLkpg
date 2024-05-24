@@ -2,81 +2,69 @@
 #include <iostream>
 #include <vector>
 
-
-
-#include "Motors/Engine.h"
-#include "Motors/SteeringServo.h"
-#include "Sensors/Joystick.h"
-#include "Sensors/USsensor.h"
-#include "steeringFunctions.h"
-
-void stopEngines();
-void setEnginesVelocity(int);
-void initiate(); 
+#include "semphr.h"
 
 
 
-void readSensor(void *parameters)
-{
-  for (;;)
-  {
-    mySensor.taskReadDistance();
+// xSemaphoreTake(),, xSemaphoreGive()
 
-      if (mySensor.getDistance() < 20) //make function
-      {
-        stopEngines();
-        Serial.println("STOP!");
-        hinderForwardMovement = true;
-        //add connect to enginevelocity
-      }
-      else 
-      {
-        hinderForwardMovement = false;
-      }                               //--------------
-    
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    
-    //Send radio Signal here
-  }
-}
-
-/*
-void printSensorReading(void *parameters)
-{
-  for (;;)
-  {
-      reading = mySensor.getDistance();
-      Serial.println(reading);
-      vTaskDelay(500 / portTICK_PERIOD_MS);
-  }
-}*/
+int counter = 0;
+SemaphoreHandle_t myHandle;
+void myFunctionAdd(void *parameters);
+void myFunctionPrint(void *parameters);
 
 
 void setup()
 {
-  initiate();
-  Serial.begin(9600);
+    myHandle = xSemaphoreCreateMutex();
 
+    Serial.begin(9600);
   xTaskCreate(
-      readSensor,    // Function name
-      "*readSensor", // Task name
-      1000,          // Stack size
-      NULL,          // Task parameters
-      1,             // Task priority
-      NULL           // Task handle
-  );
-/*
-  xTaskCreate(
-      printSensorReading,    // Function name
-      "*printSensorReading", // Task name
-      1000,                  // Stack size
-      NULL,                  // Task parameters
-      1,                     // Task priority
-      NULL                   // Task handle
-  );*/
+    myFunctionAdd,
+    "*myFunctionAdd",
+    2048,
+    NULL,
+    1,
+    NULL
+    );
+
+     xTaskCreate(
+    myFunctionPrint,
+    "*myFunctionPrint",
+    2048,
+    NULL,
+    1,
+    NULL
+    );
+}
+
+void myFunctionAdd(void *parameter){
+   for (;;)
+   {
+    if (xSemaphoreTake(myHandle, portMAX_DELAY) == pdTRUE) {  // Use portMAX_DELAY to block indefinitely
+            counter++;
+            xSemaphoreGive(myHandle);
+        }
+    
+    vTaskDelay(100);
+   }
+}
+
+void myFunctionPrint(void *parameter){
+    for (;;)
+    {
+        if (xSemaphoreTake(myHandle, portMAX_DELAY) == pdTRUE) {
+            Serial.println(counter);
+            xSemaphoreGive(myHandle);
+        }
+        vTaskDelay(1000);
+    }
+
 }
 
 void loop()
 {
+
+
   
 }
