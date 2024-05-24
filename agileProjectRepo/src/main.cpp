@@ -16,8 +16,12 @@ void loop()
 {
   carStearing.setDirection(0);
 
-  delay(5000);
-  carStearing.setDirection(120);
+  delay(1000);
+  carStearing.setDirection(60);
 
-  delay(5000);
+  delay(4000);
+
+  carStearing.setDirection(120);
+  delay(1000);
+
 }

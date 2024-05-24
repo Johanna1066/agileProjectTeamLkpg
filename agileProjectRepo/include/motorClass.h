@@ -1,5 +1,9 @@
 #pragma once
 //---------engineServo class---------------
+class Motor
+{
+
+};
 
 class engineServo : public Motor
 {
