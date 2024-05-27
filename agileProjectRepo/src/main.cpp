@@ -16,6 +16,8 @@ void setEnginesVelocity(int);
 void initiate(); 
 
 
+
+
 /*
 void readSensor(void *parameters)
 {
@@ -85,9 +87,19 @@ void setup()
 
 void loop()
 {
-  stick.horizontalRead();
+  
 
-  myServo.setDirection(0);
+  //myJoystick.horizontalRead();
+
+  
+  myJoystick.horizontalRead();
+
+ reading = myJoystick.getHorizontalValue();
+ reading = (reading / 34);
+ //Serial.println(reading);
+ myServo.setDirection(reading);
+ /*
+myServo.setDirection(0);
 
   delay(1000);
   myServo.setDirection(60);
@@ -96,4 +108,7 @@ void loop()
 
   myServo.setDirection(120);
   delay(1000);
+
+ 
+ */
 }
