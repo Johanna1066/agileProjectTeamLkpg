@@ -16,8 +16,6 @@ public:
     void setVelocity(int newVelocity);
     void intitateEngine();
     void directionReverse();
-
-
 };
 
 Engine::Engine(int velocityPIN, int positivePIN, int negativePIN)
@@ -34,7 +32,25 @@ Engine::~Engine()
 
 void Engine::setVelocity(int newVelocity)
 {
-    analogWrite(engineVelocityPIN, newVelocity);
+    int velocity = map(newVelocity, -256, 256, 0, 512);
+
+    if (newVelocity < 0)
+    {
+        if (direction)
+        {
+            //directionReverse;
+            direction = false;
+        }
+    }
+    else
+    {
+        if (!direction)
+        {
+            //directionReverse;
+            direction = true;
+        }
+    }
+    analogWrite(engineVelocityPIN, abs(velocity));
 }
 
 void Engine::intitateEngine()
@@ -48,10 +64,14 @@ void Engine::intitateEngine()
 void Engine::directionReverse()
 {
     // May change depending on connection to enginedriver hardware
-    // IDEA: add if- depending on bool diretion.
-
-    digitalWrite(enginePositivePIN, LOW);
-    digitalWrite(engineNegativePIN, HIGH);
+    if (direction)
+    {
+        digitalWrite(enginePositivePIN, LOW);
+        digitalWrite(engineNegativePIN, HIGH);
+    }
+    else
+    {
+        digitalWrite(enginePositivePIN, HIGH);
+        digitalWrite(engineNegativePIN, LOW);
+    }
 }
-
-

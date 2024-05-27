@@ -12,6 +12,7 @@ Joystick horizontalJoystick(A1, A2, 12);  //Använder A2
 
 //USsensor mySensor(D9, D10);
 int reading{};
+int engineSpeed{};
 bool hinderForwardMovement = false;
 
 void initiate()

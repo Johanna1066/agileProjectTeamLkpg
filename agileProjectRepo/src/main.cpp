@@ -25,6 +25,7 @@ void setup()
 
   initiate();
 
+
   Serial.begin(9600);
   xTaskCreate(
       verticalJoystickRead,
@@ -45,6 +46,7 @@ void setup()
 
 void loop()
 {
+  //myServo.setDirection(60);
 }
 
 void horizontalJoystickRead(void *parameter)
@@ -57,16 +59,16 @@ void horizontalJoystickRead(void *parameter)
       reading = horizontalJoystick.getHorizontalValue();
       reading = (reading / 34);
 
-      if ((reading > 55) && (reading < 60))
+      if ((reading > 50) && (reading < 65))
       {
-        reading = 58;
+        reading = 60;
       }
       Serial.printf("horizontalValue = %d \n", reading);
       myServo.setDirection(reading);
       xSemaphoreGive(myHandle);
     }
 
-    //vTaskDelay(1);
+    // vTaskDelay(1);
   }
 }
 
@@ -78,10 +80,19 @@ void verticalJoystickRead(void *parameter)
     {
       verticalJoystick.vertialRead();
       reading = verticalJoystick.getVerticalValue();
-      reading = ((reading / 8) - 255);
+      reading = (reading / 8);
+
+      // Kan vara knas, fundera kring detta, kanske fine, det märks
+      if ((reading > 240) && (reading < 265))
+      {
+        reading = 256;
+      }
+      //
+      //setEnginesVelocity(reading);
+
       // Serial.printf("verticalValue = %d \n", reading);
       xSemaphoreGive(myHandle);
     }
-    //vTaskDelay(1);
+    // vTaskDelay(1);
   }
 }
