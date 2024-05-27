@@ -33,7 +33,7 @@ public:
     void SteeringServo::initiateServo()
     {
         myServo.attach(servoPIN);
-        //myServo.setPeriodHertz(20);
+        myServo.setPeriodHertz(50);
     }
 
     void SteeringServo::setDirection(int newDirection)
