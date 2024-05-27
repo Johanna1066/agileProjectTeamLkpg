@@ -15,7 +15,9 @@ void setEnginesVelocity(int);
 void initiate();
 
 int counter = 0;
+
 SemaphoreHandle_t myHandle;
+
 void horizontalJoystickRead(void *parameters);
 void verticalJoystickRead(void *parameters);
 
@@ -24,7 +26,6 @@ void setup()
   myHandle = xSemaphoreCreateMutex();
 
   initiate();
-
 
   Serial.begin(9600);
   xTaskCreate(
@@ -46,7 +47,7 @@ void setup()
 
 void loop()
 {
-  //myServo.setDirection(60);
+  // myServo.setDirection(60);
 }
 
 void horizontalJoystickRead(void *parameter)
@@ -57,18 +58,19 @@ void horizontalJoystickRead(void *parameter)
     { // Use portMAX_DELAY to block indefinitely
       horizontalJoystick.horizontalRead();
       reading = horizontalJoystick.getHorizontalValue();
-      reading = (reading / 34);
+      int test = map(reading, 0, 4095, 0, 120);
 
-      if ((reading > 50) && (reading < 65))
+      if ((test > 50) && (test < 65))
       {
-        reading = 60;
+        test = 60;
       }
-      Serial.printf("horizontalValue = %d \n", reading);
-      myServo.setDirection(reading);
+
+      myServo.setDirection(test);
+
       xSemaphoreGive(myHandle);
     }
 
-    // vTaskDelay(1);
+    vTaskDelay(1);
   }
 }
 
@@ -78,21 +80,12 @@ void verticalJoystickRead(void *parameter)
   {
     if (xSemaphoreTake(myHandle, portMAX_DELAY) == pdTRUE)
     {
-      verticalJoystick.vertialRead();
-      reading = verticalJoystick.getVerticalValue();
-      reading = (reading / 8);
+      horizontalJoystick.vertialRead();
+      reading = horizontalJoystick.getVerticalValue();
 
-      // Kan vara knas, fundera kring detta, kanske fine, det märks
-      if ((reading > 240) && (reading < 265))
-      {
-        reading = 256;
-      }
-      //
-      //setEnginesVelocity(reading);
-
-      // Serial.printf("verticalValue = %d \n", reading);
+      setEnginesVelocity(reading);
       xSemaphoreGive(myHandle);
     }
-    // vTaskDelay(1);
+    vTaskDelay(10);
   }
 }

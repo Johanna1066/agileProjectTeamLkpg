@@ -8,7 +8,7 @@ private:
     int engineNegativePIN{};
 
     int velocity{};
-    bool direction{}; // true = forward, false = backwards
+    bool direction{true}; // true = forward, false = backwards
 
 public:
     Engine(int velocityPIN, int positivePIN, int negativePIN);
@@ -30,37 +30,6 @@ Engine::~Engine()
 {
 }
 
-void Engine::setVelocity(int newVelocity)
-{
-    int velocity = map(newVelocity, -256, 256, 0, 512);
-
-    if (newVelocity < 0)
-    {
-        if (direction)
-        {
-            //directionReverse;
-            direction = false;
-        }
-    }
-    else
-    {
-        if (!direction)
-        {
-            //directionReverse;
-            direction = true;
-        }
-    }
-    analogWrite(engineVelocityPIN, abs(velocity));
-}
-
-void Engine::intitateEngine()
-{
-    pinMode(engineVelocityPIN, OUTPUT);
-    pinMode(enginePositivePIN, OUTPUT);
-    pinMode(engineNegativePIN, OUTPUT);
-    digitalWrite(enginePositivePIN, LOW);
-    digitalWrite(engineNegativePIN, HIGH);
-}
 void Engine::directionReverse()
 {
     // May change depending on connection to enginedriver hardware
@@ -74,4 +43,43 @@ void Engine::directionReverse()
         digitalWrite(enginePositivePIN, HIGH);
         digitalWrite(engineNegativePIN, LOW);
     }
+}
+
+void Engine::setVelocity(int newVelocity)
+{
+    int velocity = map(newVelocity, 0, 4096, -255, 255);
+
+    if ((velocity > -20) && (velocity < 20))
+    {
+        velocity = 0;
+    }
+
+    Serial.printf("New velocity = %d \n", newVelocity);
+    Serial.printf("Velocity = %d\n", velocity);
+    if (newVelocity < 0)
+    {
+        if (direction)
+        {
+            directionReverse();
+            direction = false;
+        }
+    }
+    else if (newVelocity > 0)
+    {
+        if (!direction)
+        {
+            directionReverse();
+            direction = true;
+        }
+    }
+    analogWrite(engineVelocityPIN, abs(velocity));
+}
+
+void Engine::intitateEngine()
+{
+    pinMode(engineVelocityPIN, OUTPUT);
+    pinMode(enginePositivePIN, OUTPUT);
+    pinMode(engineNegativePIN, OUTPUT);
+    digitalWrite(enginePositivePIN, LOW);
+    digitalWrite(engineNegativePIN, HIGH);
 }

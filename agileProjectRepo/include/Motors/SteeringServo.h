@@ -33,6 +33,7 @@ public:
     void SteeringServo::initiateServo()
     {
         myServo.attach(servoPIN);
+        myServo.write(60);
         myServo.setPeriodHertz(50);
     }
 
