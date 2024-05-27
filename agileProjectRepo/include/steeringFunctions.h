@@ -7,7 +7,8 @@ Engine right(A1, D6, D5);
 Engine left(A2, D4, D3);
 
 SteeringServo myServo(9);
-Joystick myJoystick(A1, A2, 3);
+Joystick verticalJoystick(A6, A1, 12);  //Använder A6
+Joystick horizontalJoystick(A1, A2, 12);  //Använder A2
 
 //USsensor mySensor(D9, D10);
 int reading{};
@@ -15,7 +16,8 @@ bool hinderForwardMovement = false;
 
 void initiate()
 {
-    myJoystick.initiateJoystick();
+    verticalJoystick.initiateJoystick();
+    horizontalJoystick.initiateJoystick();
     myServo.initiateServo();
     engines.push_back(left);
     engines.push_back(right);

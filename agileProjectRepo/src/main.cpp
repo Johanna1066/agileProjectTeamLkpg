@@ -87,28 +87,16 @@ void setup()
 
 void loop()
 {
-  
+horizontalJoystick.horizontalRead();
+reading = horizontalJoystick.getHorizontalValue();
+reading = (reading / 34);
+Serial.printf("horizontalValue = %d \n", reading);
+myServo.setDirection(reading);
 
-  //myJoystick.horizontalRead();
+verticalJoystick.vertialRead();
+reading = verticalJoystick.getVerticalValue();
+reading = ((reading / 8) - 255);
+Serial.printf("verticalValue = %d \n", reading);
 
-  
-  myJoystick.horizontalRead();
-
- reading = myJoystick.getHorizontalValue();
- reading = (reading / 34);
- //Serial.println(reading);
- myServo.setDirection(reading);
- /*
-myServo.setDirection(0);
-
-  delay(1000);
-  myServo.setDirection(60);
-
-  delay(4000);
-
-  myServo.setDirection(120);
-  delay(1000);
-
- 
- */
+Serial.println("-------------------------------");
 }

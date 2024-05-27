@@ -28,6 +28,8 @@ public:
 
     int getHorizontalValue();
 
+    int getVerticalValue();
+
     //void buttonRead();   If we are going to use button on joystick
 
 };
@@ -61,24 +63,13 @@ void Joystick::initiateJoystick()
 
     centerHorizontalValue = analogRead(joyStickHorizontalPIN);
     centerVerticalValue = analogRead(joyStickVerticalPIN);
+
+
 }
 
 void Joystick::vertialRead()
 {
     verticalValue = analogRead(joyStickVerticalPIN);
-
-    if((centerVerticalValue - 100) <= verticalValue && verticalValue <= (centerVerticalValue + 100))
-    {
-        Serial.println("joystick:verticalRead Y axis center.");
-    }
-    else if(centerVerticalValue > verticalValue)
-    {
-        Serial.printf("joystick:verticalRead Y axis < centerVerticalValue. \nY = %d \n", verticalValue);
-    }
-    else if(centerVerticalValue < verticalValue)
-    {
-        Serial.printf("joystick:verticalRead Y axis > centerVerticalValue. \nY = %d \n", verticalValue);
-    }
 }
 
 void Joystick::horizontalRead()
@@ -102,9 +93,15 @@ void Joystick::horizontalRead()
     */
 }
 
-int Joystick::getHorizontalValue(){
-    Serial.println(horizontalValue);
+int Joystick::getHorizontalValue()
+{
+    //Serial.println(horizontalValue);
     return horizontalValue;
+}
+
+int Joystick::getVerticalValue()
+{
+    return verticalValue;
 }
 
 /*Joystick::buttonRead()
