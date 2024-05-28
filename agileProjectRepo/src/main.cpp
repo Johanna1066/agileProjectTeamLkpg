@@ -105,20 +105,19 @@ void horizontalJoystickReadSend(void *parameter)
       horizontalJoystick.horizontalRead();
       reading = horizontalJoystick.getHorizontalValue();
 
-      reading +=10000;
+      reading += 10000;
 
       // Send reading
 
       esp_err_t result = esp_now_send(
-          broadcastAddress,           // MAC-adress of reciever unit
+          broadcastAddress,    // MAC-adress of reciever unit
           (uint8_t *)&reading, // Message to send
-          sizeof(reading)); // Size of message
+          sizeof(reading));    // Size of message
 
       if (result != ESP_OK)
       {
         Serial.println("Error sending the data");
       }
-
 
       xSemaphoreGive(myHandle);
     }
@@ -138,9 +137,9 @@ void verticalJoystickReadSend(void *parameter)
 
       // Send reading
       esp_err_t result = esp_now_send(
-          broadcastAddress, // MAC-adress of reciever unit
-          (uint8_t *)&reading,     // Message to send
-          sizeof(reading));     // Size of message
+          broadcastAddress,    // MAC-adress of reciever unit
+          (uint8_t *)&reading, // Message to send
+          sizeof(reading));    // Size of message
 
       if (result == ESP_OK)
       {
