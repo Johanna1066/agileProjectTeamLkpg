@@ -80,8 +80,8 @@ void verticalJoystickRead(void *parameter)
   {
     if (xSemaphoreTake(myHandle, portMAX_DELAY) == pdTRUE)
     {
-      horizontalJoystick.vertialRead();
-      reading = horizontalJoystick.getVerticalValue();
+      verticalJoystick.vertialRead();
+      reading = verticalJoystick.getVerticalValue();
 
       setEnginesVelocity(reading);
       xSemaphoreGive(myHandle);
