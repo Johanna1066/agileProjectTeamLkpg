@@ -13,7 +13,7 @@ private:
 public:
     Engine(int velocityPIN, int positivePIN, int negativePIN);
     ~Engine();
-    void setVelocity(inin);
+    void setVelocity(int);
     void intitateEngine();
     void directionReverse();
 };

@@ -16,8 +16,6 @@ bool hinderForwardMovement = false;
 
 void initiate()
 {
-    verticalJoystick.initiateJoystick();
-    horizontalJoystick.initiateJoystick();
     myServo.initiateServo();
     engines.push_back(left);
     engines.push_back(right);
