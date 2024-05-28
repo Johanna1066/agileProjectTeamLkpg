@@ -40,7 +40,7 @@ public:
 
     // IDEA: Setup subscription function
 
-    void taskReadDistance()
+    void readDistance()
     {
         // TODO: Can we remove or change theese delays in some way?
         // We don't want to hard code in delays

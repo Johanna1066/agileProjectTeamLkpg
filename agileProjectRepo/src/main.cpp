@@ -11,14 +11,40 @@
 
 
 #include "semphr.h"
+
+
 // Car code
 
-SemaphoreHandle_t myHandle;
+
+//Handle för att styra engine
+SemaphoreHandle_t engineHandle;
+
+
+void sensorCheck(void* parameters);
 
 
 
-// REPLACE WITH YOUR RECEIVER MAC Address
+// Comunication code
 
+
+// callback function that will be executed when data is received
+void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+  memcpy(&dataRecieved, incomingData, sizeof(dataRecieved));
+  
+  /*TODO: if(dataRecieved matchar enginedata)
+  {
+    semaphoreTAKE
+    gör data användbar
+    skicka info till engines
+    semaphoreGIVE
+  }
+  else if (dataRecieved matchar servodata)
+  {
+    gör data användbar
+    skicka info till servo
+  }
+  */ 
+}
 
 
 
@@ -27,31 +53,32 @@ void setup()
   // Init Serial Monitor
   Serial.begin(115200);
   // Create semaphore
-  myHandle = xSemaphoreCreateMutex();
-  if (myHandle == NULL)
+  engineHandle = xSemaphoreCreateMutex();
+  if (engineHandle == NULL)
   {
     Serial.println("Error creating semaphore");
     return;
   }
 
+  // Set device as a Wi-Fi Station
+  WiFi.mode(WIFI_STA);
+
+  // Init ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+  }
+  
+  // Once ESPNow is successfully Init, we will register for recv CB to
+  // get recv packer info
+  esp_now_register_recv_cb(OnDataRecv);
+
 
   // Create tasks
-/*
-  if (xTaskCreate(
-          verticalReadSend,
-          "verticalReadSend",
-          4096,
-          NULL,
-          1,
-          NULL) != pdPASS)
-  {
-    Serial.println("Error creating task");
-    return;
-  }
 
   if (xTaskCreate(
-          verticalReadSend,
-          "verticalReadSend",
+          sensorCheck,
+          "*sensorCheck",
           4096,
           NULL,
           1,
@@ -60,7 +87,7 @@ void setup()
     Serial.println("Error creating task");
     return;
   }
-  */
+  
 }
 
 void loop()
@@ -69,58 +96,18 @@ void loop()
 }
 
 
-
-/*
-void verticalReadSend(void *parameter)
+void sensorCheck(void* parameters)
 {
-  for (;;)
+  mySensor.readDistance();
+  reading = mySensor.getDistance();
+
+  if (reading < 20) //TODO: kan detta läggas in i USsensorklassen istället för hårdkodning? exempelvis i konstruktorn
   {
-    if (xSemaphoreTake(myHandle, portMAX_DELAY) == pdTRUE)
-    {
-      // Read vertical joystick value
-      verticalJoystick.doReading();
-      reading = verticalJoystick.getValue();
-      // Send reading
+    //TODO: Semaphore TAKE
+    
+    //Hinder forward movement någonting någonting
 
-
-      esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)&reading, sizeof(reading));
-      if (result == ESP_OK)
-      {
-        Serial.println("Sent with success");
-      }
-      else
-      {
-        Serial.println("Error sending the data");
-      }
-      xSemaphoreGive(myHandle);
-    }
-    vTaskDelay(100);
+    //TODO: Semaphore GIVE
   }
 }
 
-void horizontalReadSend(void *parameter)
-{
-  for (;;)
-  {
-    if (xSemaphoreTake(myHandle, portMAX_DELAY) == pdTRUE)
-    {
-      // Read vertical joystick value
-      horizontalJoystick.doReading();
-      reading = horizontalJoystick.getValue();
-      // Send reading
-      esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)&reading, sizeof(reading));
-      if (result == ESP_OK)
-      {
-        Serial.println("Sent with success");
-      }
-      else
-      {
-        Serial.println("Error sending the data");
-      }
-      xSemaphoreGive(myHandle);
-    }
-    vTaskDelay(100);
-  }
-}
-
-*/

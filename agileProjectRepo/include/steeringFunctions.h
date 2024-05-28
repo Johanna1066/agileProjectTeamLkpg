@@ -7,8 +7,10 @@ Engine left(A2, D4, D3);
 
 SteeringServo myServo(9);
 
+USsensor mySensor(D9, D10); //TODO: Change to correct PINs
 
-// USsensor mySensor(D9, D10);
+int reading{};
+int dataRecieved{};
 
 int engineSpeed{};
 uint8_t direction{};
