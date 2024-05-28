@@ -42,6 +42,5 @@ void Joystick::doReading()
 
 int Joystick::getValue()
 {
-    // Serial.println(horizontalValue);
     return value;
 }
