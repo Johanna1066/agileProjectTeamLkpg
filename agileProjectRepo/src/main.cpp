@@ -105,6 +105,8 @@ void verticalReadSend(void *parameter)
       verticalJoystick.doReading();
       reading = verticalJoystick.getValue();
       // Send reading
+
+      //TODO: add differentiation between what this and the next task sends
       esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)&reading, sizeof(reading));
       if (result == ESP_OK)
       {
