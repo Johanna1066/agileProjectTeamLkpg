@@ -8,12 +8,9 @@ private:
     int joyStickHorizontalPIN{};
     int joyStickButtonPIN{};
 
-    uint8_t verticalValue{};
+    int verticalValue{};
     int horizontalValue{};
     int buttonValue{};
-
-    int centerHorizontalValue{};
-    int centerVerticalValue{};
 
 public:
     Joystick(int verticalPIN, int horizontalPIN, int buttonPIN);
@@ -28,7 +25,7 @@ public:
 
     int getHorizontalValue();
 
-    uint8_t getVerticalValue();
+    int getVerticalValue();
 
     // void buttonRead();   If we are going to use button on joystick
 };
@@ -59,8 +56,6 @@ void Joystick::initiateJoystick()
     pinMode(joyStickHorizontalPIN, INPUT);
     pinMode(joyStickButtonPIN, INPUT);
 
-    centerHorizontalValue = analogRead(joyStickHorizontalPIN);
-    centerVerticalValue = analogRead(joyStickVerticalPIN);
 }
 
 void Joystick::verticalRead()
@@ -72,22 +67,6 @@ void Joystick::verticalRead()
 void Joystick::horizontalRead()
 {
     horizontalValue = analogRead(joyStickHorizontalPIN);
-
-    /*
-    if((centerHorizontalValue - 100) <= horizontalValue && horizontalValue <= (centerHorizontalValue + 100))
-    {
-        Serial.println("joystick:horizontalRead X axis center.");
-    }
-    else if(centerHorizontalValue > horizontalValue)
-    {
-        Serial.printf("joystick:horizontalRead X axis < centerHorizontalValue. \nX = %d \n", horizontalValue);
-    }
-    else if(centerHorizontalValue < horizontalValue)
-    {
-        Serial.printf("joystick:horizontalRead X axis > centerHorizontalValue. \nX = %d \n", horizontalValue);
-    }
-    delay(500);
-    */
 }
 
 int Joystick::getHorizontalValue()
@@ -96,7 +75,7 @@ int Joystick::getHorizontalValue()
     return horizontalValue;
 }
 
-uint8_t Joystick::getVerticalValue()
+int Joystick::getVerticalValue()
 {
     return verticalValue;
 }
