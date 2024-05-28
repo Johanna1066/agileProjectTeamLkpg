@@ -7,13 +7,13 @@ private:
     int enginePositivePIN{};
     int engineNegativePIN{};
 
-    int velocity{};
+    int newVelocity{};
     bool direction{true}; // true = forward, false = backwards
 
 public:
     Engine(int velocityPIN, int positivePIN, int negativePIN);
     ~Engine();
-    void setVelocity(int newVelocity);
+    void setVelocity(inin);
     void intitateEngine();
     void directionReverse();
 };
@@ -45,18 +45,18 @@ void Engine::directionReverse()
     }
 }
 
-void Engine::setVelocity(int newVelocity)
+void Engine::setVelocity(int inVelocity)
 {
-    int velocity = map(newVelocity, 0, 4096, -255, 255);
+    int newVelocity = map(inVelocity, 0, 4096, -255, 255);
 
-    if ((velocity > -20) && (velocity < 20))
+    if ((newVelocity > -20) && (newVelocity < 20))
     {
-        velocity = 0;
+        newVelocity = 0;
     }
 
-    Serial.printf("New velocity = %d \n", newVelocity);
-    Serial.printf("Velocity = %d\n", velocity);
-    if (newVelocity < 0)
+    Serial.printf("New newVelocity = %d \n", inVelocity);
+    Serial.printf("Velocity = %d\n", newVelocity);
+    if (inVelocity < 0)
     {
         if (direction)
         {
@@ -64,7 +64,7 @@ void Engine::setVelocity(int newVelocity)
             direction = false;
         }
     }
-    else if (newVelocity > 0)
+    else if (inVelocity > 0)
     {
         if (!direction)
         {
@@ -72,7 +72,7 @@ void Engine::setVelocity(int newVelocity)
             direction = true;
         }
     }
-    analogWrite(engineVelocityPIN, abs(velocity));
+    analogWrite(engineVelocityPIN, abs(newVelocity));
 }
 
 void Engine::intitateEngine()
