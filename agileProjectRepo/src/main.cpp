@@ -1,9 +1,6 @@
 #include <Arduino.h>
-#include <iostream>
-#include <vector>
 #include <esp_now.h>
 #include <WiFi.h>
-#include <string>
 
 #include "Sensors/Joystick.h"
 
@@ -11,63 +8,40 @@
 
 // Joystick code
 
-Joystick verticalJoystick(A6, A5, 12);   // Använder A6
-Joystick horizontalJoystick(A6, A5, 12); // Använder A5
-
-uint8_t reading{};
-
-uint8_t broadcastAddress[] = {0xEC, 0xDA, 0x3B, 0x60, 0xCD, 0xB4};
-
-esp_now_peer_info_t peerInfo;
-
 SemaphoreHandle_t myHandle;
 
 void horizontalJoystickReadSend(void *parameters);
 void verticalJoystickReadSend(void *parameters);
 
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
+//____________________________________________
+
+// REPLACE WITH YOUR RECEIVER MAC Address
+uint8_t broadcastAddress[] = {0xEC, 0xDA, 0x3B, 0x60, 0xCD, 0xB4};
+
+Joystick verticalJoystick(A6, A5, 12);
+
+int reading = 0;
+
+esp_now_peer_info_t peerInfo;
+
+// callback when data is sent
+void OnDataSent(const uint8_t mac_addr, esp_now_send_status_t status)
 {
   Serial.print("\r\nLast Packet Send Status:\t");
   Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
-int countDigit(int number)
-{
-  int count = 0;
-  while (number != 0)
-  {
-    number = number / 10;
-    count++;
-  }
-  return count;
-}
-
 void setup()
 {
-  // task things
+  // Init Serial Monitor
+  Serial.begin(115200);
+  verticalJoystick.initiateJoystick();
   myHandle = xSemaphoreCreateMutex();
 
-  Serial.begin(9600);
-  xTaskCreate(
-      verticalJoystickReadSend,
-      "*verticalJoystickReadSend",
-      4096,
-      NULL,
-      1,
-      NULL);
-
-  xTaskCreate(
-      horizontalJoystickReadSend,
-      "*horizontalJoystickReadSend",
-      4096,
-      NULL,
-      1,
-      NULL);
-
-  //-----------Other setup---------------
-
+  // Set device as a Wi-Fi Station
   WiFi.mode(WIFI_STA);
 
+  // Init ESP-NOW
   if (esp_now_init() != ESP_OK)
   {
     Serial.println("Error initializing ESP-NOW");
@@ -89,13 +63,23 @@ void setup()
     Serial.println("Failed to add peer");
     return;
   }
+
+  xTaskCreate(
+      verticalJoystickReadSend,
+      "*verticalJoystickReadSend",
+      4096,
+      NULL,
+      1,
+      NULL);
 }
 
 void loop()
 {
-  // myServo.setDirection(60);
 }
 
+//____________________________________________
+
+/*
 void horizontalJoystickReadSend(void *parameter)
 {
   for (;;)
@@ -124,7 +108,7 @@ void horizontalJoystickReadSend(void *parameter)
 
     vTaskDelay(1);
   }
-}
+}*/
 
 void verticalJoystickReadSend(void *parameter)
 {
@@ -132,25 +116,22 @@ void verticalJoystickReadSend(void *parameter)
   {
     if (xSemaphoreTake(myHandle, portMAX_DELAY) == pdTRUE)
     {
-      verticalJoystick.vertialRead();
+      verticalJoystick.verticalRead();
       reading = verticalJoystick.getVerticalValue();
 
-      // Send reading
-      esp_err_t result = esp_now_send(
-          broadcastAddress,    // MAC-adress of reciever unit
-          (uint8_t *)&reading, // Message to send
-          sizeof(reading));    // Size of message
+      esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)&reading, sizeof(reading));
 
       if (result == ESP_OK)
       {
-        esp_err_t result = esp_now_send(
-            broadcastAddress,    // MAC-adress of reciever unit
-            (uint8_t *)&reading, // Message to send
-            sizeof(reading));    // Size of message
+        Serial.println("Sent with success");
+      }
+      else
+      {
+        Serial.println("Error sending the data");
       }
 
       xSemaphoreGive(myHandle);
     }
-    vTaskDelay(10);
+    vTaskDelay(100);
   }
 }

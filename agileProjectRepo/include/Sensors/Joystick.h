@@ -8,7 +8,7 @@ private:
     int joyStickHorizontalPIN{};
     int joyStickButtonPIN{};
 
-    int verticalValue{};
+    uint8_t verticalValue{};
     int horizontalValue{};
     int buttonValue{};
 
@@ -22,13 +22,13 @@ public:
 
     void initiateJoystick();
 
-    void vertialRead();
+    void verticalRead();
 
     void horizontalRead();
 
     int getHorizontalValue();
 
-    int getVerticalValue();
+    uint8_t getVerticalValue();
 
     // void buttonRead();   If we are going to use button on joystick
 };
@@ -38,7 +38,6 @@ Joystick::Joystick(int verticalPIN, int horizontalPIN, int buttonPIN)
     joyStickVerticalPIN = verticalPIN;
     joyStickHorizontalPIN = horizontalPIN;
     joyStickButtonPIN = buttonPIN;
-    this->initiateJoystick();
 }
 
 Joystick::~Joystick()
@@ -64,10 +63,10 @@ void Joystick::initiateJoystick()
     centerVerticalValue = analogRead(joyStickVerticalPIN);
 }
 
-void Joystick::vertialRead()
+void Joystick::verticalRead()
 {
     verticalValue = analogRead(joyStickVerticalPIN);
-    //Serial.printf("Value = %d\n", verticalValue);
+    // Serial.printf("Value = %d\n", verticalValue);
 }
 
 void Joystick::horizontalRead()
@@ -97,7 +96,7 @@ int Joystick::getHorizontalValue()
     return horizontalValue;
 }
 
-int Joystick::getVerticalValue()
+uint8_t Joystick::getVerticalValue()
 {
     return verticalValue;
 }
