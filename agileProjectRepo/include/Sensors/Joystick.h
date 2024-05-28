@@ -1,86 +1,47 @@
 #pragma once
 //------Joystick---------
 
+// enumeration to decide wich type the joystick object is
+
 class Joystick
 {
 private:
-    int joyStickVerticalPIN{};
-    int joyStickHorizontalPIN{};
-    int joyStickButtonPIN{};
-
-    int verticalValue{};
-    int horizontalValue{};
-    int buttonValue{};
+    int joystickPIN{};
+    int value{};
 
 public:
-    Joystick(int verticalPIN, int horizontalPIN, int buttonPIN);
+    Joystick(int);
 
     ~Joystick();
 
     void initiateJoystick();
 
-    void verticalRead();
+    void doReading();
 
-    void horizontalRead();
-
-    int getHorizontalValue();
-
-    int getVerticalValue();
-
-    // void buttonRead();   If we are going to use button on joystick
+    int getValue();
 };
 
-Joystick::Joystick(int verticalPIN, int horizontalPIN, int buttonPIN)
+Joystick::Joystick(int pinIN)
 {
-    joyStickVerticalPIN = verticalPIN;
-    joyStickHorizontalPIN = horizontalPIN;
-    joyStickButtonPIN = buttonPIN;
+    joystickPIN = pinIN;
 }
 
 Joystick::~Joystick()
 {
-    /*
-    delete joyStickButtonPIN;
-    delete joyStickHorizontalPIN;
-    delete joyStickButtonPIN;
-
-    delete verticalValue;
-    delete horizontalValue;
-    delete buttonValue;
-    */
 }
 
 void Joystick::initiateJoystick()
 {
-    pinMode(joyStickVerticalPIN, INPUT);
-    pinMode(joyStickHorizontalPIN, INPUT);
-    pinMode(joyStickButtonPIN, INPUT);
-
+    pinMode(joystickPIN, INPUT);
 }
 
-void Joystick::verticalRead()
+void Joystick::doReading()
 {
-    verticalValue = analogRead(joyStickVerticalPIN);
-    // Serial.printf("Value = %d\n", verticalValue);
+    value = analogRead(joystickPIN);
 }
 
-void Joystick::horizontalRead()
-{
-    horizontalValue = analogRead(joyStickHorizontalPIN);
-}
-
-int Joystick::getHorizontalValue()
+int Joystick::getValue()
 {
     // Serial.println(horizontalValue);
-    return horizontalValue;
+    return value;
 }
-
-int Joystick::getVerticalValue()
-{
-    return verticalValue;
-}
-
-/*Joystick::buttonRead()
-    {
-        //TODO: if we use the button on Joystick
-    }*/
