@@ -1,32 +1,29 @@
 #pragma once
 
-
 std::vector<Engine> engines;
 
 Engine right(A1, D6, D5);
 Engine left(A2, D4, D3);
 
 SteeringServo myServo(9);
-//Joystick verticalJoystick(A6, A5, 12);  //Använder A6
-Joystick horizontalJoystick(A6, A5, 12);  //Använder A5
 
-//USsensor mySensor(D9, D10);
-int reading{};
+
+// USsensor mySensor(D9, D10);
+
 int engineSpeed{};
+uint8_t direction{};
 bool hinderForwardMovement = false;
 
 void initiate()
 {
-    //verticalJoystick.initiateJoystick();
+    verticalJoystick.initiateJoystick();
     horizontalJoystick.initiateJoystick();
     myServo.initiateServo();
     engines.push_back(left);
     engines.push_back(right);
     right.intitateEngine();
     left.intitateEngine();
-    //mySensor.initiateUSsensor();
-
-
+    // mySensor.initiateUSsensor();
 }
 void stopEngines()
 {

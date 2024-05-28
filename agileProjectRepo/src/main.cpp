@@ -1,48 +1,94 @@
 #include <Arduino.h>
 #include <iostream>
 #include <vector>
+#include <esp_now.h>
+#include <WiFi.h>
+#include <string>
 
-#include "Motors/Engine.h"
-#include "Motors/SteeringServo.h"
 #include "Sensors/Joystick.h"
-#include "Sensors/USsensor.h"
-#include "steeringFunctions.h"
 
 #include "semphr.h"
 
-void stopEngines();
-void setEnginesVelocity(int);
-void initiate();
+// Joystick code
 
-int counter = 0;
+Joystick verticalJoystick(A6, A5, 12);   // Använder A6
+Joystick horizontalJoystick(A6, A5, 12); // Använder A5
+
+uint8_t reading{};
+
+uint8_t broadcastAddress[] = {0xEC, 0xDA, 0x3B, 0x60, 0xCD, 0xB4};
+
+esp_now_peer_info_t peerInfo;
 
 SemaphoreHandle_t myHandle;
 
-void horizontalJoystickRead(void *parameters);
-void verticalJoystickRead(void *parameters);
+void horizontalJoystickReadSend(void *parameters);
+void verticalJoystickReadSend(void *parameters);
+
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
+{
+  Serial.print("\r\nLast Packet Send Status:\t");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+}
+
+int countDigit(int number)
+{
+  int count = 0;
+  while (number != 0)
+  {
+    number = number / 10;
+    count++;
+  }
+  return count;
+}
 
 void setup()
 {
+  // task things
   myHandle = xSemaphoreCreateMutex();
-
-  initiate();
 
   Serial.begin(9600);
   xTaskCreate(
-      verticalJoystickRead,
-      "*verticalJoystickRead",
+      verticalJoystickReadSend,
+      "*verticalJoystickReadSend",
       4096,
       NULL,
       1,
       NULL);
 
   xTaskCreate(
-      horizontalJoystickRead,
-      "*horizontalJoystickRead",
+      horizontalJoystickReadSend,
+      "*horizontalJoystickReadSend",
       4096,
       NULL,
       1,
       NULL);
+
+  //-----------Other setup---------------
+
+  WiFi.mode(WIFI_STA);
+
+  if (esp_now_init() != ESP_OK)
+  {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+  }
+
+  // Once ESPNow is successfully Init, we will register for Send CB to
+  // get the status of Transmitted packet
+  esp_now_register_send_cb(OnDataSent);
+
+  // Register peer
+  memcpy(peerInfo.peer_addr, broadcastAddress, 6);
+  peerInfo.channel = 0;
+  peerInfo.encrypt = false;
+
+  // Add peer
+  if (esp_now_add_peer(&peerInfo) != ESP_OK)
+  {
+    Serial.println("Failed to add peer");
+    return;
+  }
 }
 
 void loop()
@@ -50,7 +96,7 @@ void loop()
   // myServo.setDirection(60);
 }
 
-void horizontalJoystickRead(void *parameter)
+void horizontalJoystickReadSend(void *parameter)
 {
   for (;;)
   {
@@ -58,14 +104,21 @@ void horizontalJoystickRead(void *parameter)
     { // Use portMAX_DELAY to block indefinitely
       horizontalJoystick.horizontalRead();
       reading = horizontalJoystick.getHorizontalValue();
-      int test = map(reading, 0, 4095, 0, 120);
 
-      if ((test > 50) && (test < 65))
+      reading +=10000;
+
+      // Send reading
+
+      esp_err_t result = esp_now_send(
+          broadcastAddress,           // MAC-adress of reciever unit
+          (uint8_t *)&reading, // Message to send
+          sizeof(reading)); // Size of message
+
+      if (result != ESP_OK)
       {
-        test = 60;
+        Serial.println("Error sending the data");
       }
 
-      myServo.setDirection(test);
 
       xSemaphoreGive(myHandle);
     }
@@ -74,7 +127,7 @@ void horizontalJoystickRead(void *parameter)
   }
 }
 
-void verticalJoystickRead(void *parameter)
+void verticalJoystickReadSend(void *parameter)
 {
   for (;;)
   {
@@ -83,7 +136,20 @@ void verticalJoystickRead(void *parameter)
       verticalJoystick.vertialRead();
       reading = verticalJoystick.getVerticalValue();
 
-      setEnginesVelocity(reading);
+      // Send reading
+      esp_err_t result = esp_now_send(
+          broadcastAddress, // MAC-adress of reciever unit
+          (uint8_t *)&reading,     // Message to send
+          sizeof(reading));     // Size of message
+
+      if (result == ESP_OK)
+      {
+        esp_err_t result = esp_now_send(
+            broadcastAddress,    // MAC-adress of reciever unit
+            (uint8_t *)&reading, // Message to send
+            sizeof(reading));    // Size of message
+      }
+
       xSemaphoreGive(myHandle);
     }
     vTaskDelay(10);
