@@ -10,7 +10,7 @@ private:
     int value{};
 
 public:
-    Joystick(int);
+    Joystick(int pinIN);
 
     ~Joystick();
 

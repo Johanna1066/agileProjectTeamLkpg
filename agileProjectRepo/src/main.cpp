@@ -1,7 +1,8 @@
 #include <Arduino.h>
+#include "Sensors/Joystick.h"
+/*
 #include <esp_now.h>
 #include <WiFi.h>
-#include "Sensors/Joystick.h"
 #include "semphr.h"
 // Joystick code
 
@@ -10,25 +11,27 @@ SemaphoreHandle_t myHandle;
 void horizontalReadSend(void *parameters);
 void verticalReadSend(void *parameters);
 
-// REPLACE WITH YOUR RECEIVER MAC Address
-
-Joystick verticalJoystick(A5);
-Joystick horizontalJoystick(A6);
-
 int reading = 0;
 
 esp_now_peer_info_t peerInfo;
 uint8_t broadcastAddress[] = {0xEC, 0xDA, 0x3B, 0x60, 0xCD, 0xB4};
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
+*/
+// REPLACE WITH YOUR RECEIVER MAC Address
+
+Joystick verticalJoystick(A2);
+Joystick horizontalJoystick(A1);
+
 
 void setup()
 {
   // Init Serial Monitor
-  Serial.begin(115200);
+  Serial.begin(9600);
   verticalJoystick.initiateJoystick();
   horizontalJoystick.initiateJoystick();
   // Create semaphore
+  /*
   myHandle = xSemaphoreCreateMutex();
   if (myHandle == NULL)
   {
@@ -82,13 +85,21 @@ void setup()
     Serial.println("Error creating task");
     return;
   }
+  */
 }
 
 void loop()
 {
   // Main loop does nothing, tasks handle everything
+  
+  verticalJoystick.doReading();
+  horizontalJoystick.doReading();
+  Serial.println("verticalJoystick = " + verticalJoystick.getValue());
+  Serial.println("horizontalJoystick = " + horizontalJoystick.getValue());
+  Serial.println("-----------------------------------");
 }
 
+/*
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
   Serial.print("\r\nLast Packet Send Status:\t");
@@ -146,3 +157,4 @@ void horizontalReadSend(void *parameter)
     vTaskDelay(100);
   }
 }
+*/
