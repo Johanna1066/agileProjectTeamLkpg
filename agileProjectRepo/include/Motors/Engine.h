@@ -54,8 +54,8 @@ void Engine::setVelocity(int inVelocity)
         newVelocity = 0;
     }
 
-    Serial.printf("New newVelocity = %d \n", inVelocity);
-    Serial.printf("Velocity = %d\n", newVelocity);
+    //Serial.printf("New newVelocity = %d \n", inVelocity);
+    //Serial.printf("Velocity = %d\n", newVelocity);
     if (inVelocity < 0)
     {
         if (direction)

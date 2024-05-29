@@ -4,7 +4,6 @@
 #include <vector>
 #include "ESP32Servo.h"
 
-
 #include "Sensors/USsensor.h"
 #include "Motors/Engine.h"
 #include "Motors/SteeringServo.h"
@@ -12,47 +11,52 @@
 
 #include "semphr.h"
 
-
 // Car code
 
-
-//Handle för att styra engine
+// Handle för att styra engine
 SemaphoreHandle_t engineHandle;
 SemaphoreHandle_t servoHandle;
 
-
-void sensorCheck(void* parameters);
-
-
+void sensorCheck(void *parameters);
 
 // Comunication code
 
-
 // callback function that will be executed when data is received
-void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
+{
   memcpy(&dataRecieved, incomingData, sizeof(dataRecieved));
-  
+
   if (dataRecieved >= 10000)
   {
     if (xSemaphoreTake(servoHandle, portMAX_DELAY) == pdTRUE)
     {
-      dataRecieved -= 10000;
+      dataRecieved -= 10000; 
+      if((dataRecieved > 1300)&& (dataRecieved < 1900))
+      {
+        dataRecieved = 1700;
+      }
       myServo.setDirection(dataRecieved);
+      //Serial.print("Servodata: ");
+      //Serial.println(dataRecieved);
       xSemaphoreGive(servoHandle);
     }
   }
-
-  if ((dataRecieved >= 0) && (dataRecieved <= 4096))
+  else if ((dataRecieved >= 0) && (dataRecieved <= 4096))
   {
     if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
     {
+      
+      if((dataRecieved > 1300)&& (dataRecieved < 1900))
+      {
+        dataRecieved = 1700;
+      }
       setEnginesVelocity(dataRecieved);
+      //Serial.print("Enginedata: ");
+      //Serial.println(dataRecieved);
       xSemaphoreGive(engineHandle);
     }
   }
 }
-
-
 
 void setup()
 {
@@ -77,19 +81,19 @@ void setup()
   WiFi.mode(WIFI_STA);
 
   // Init ESP-NOW
-  if (esp_now_init() != ESP_OK) {
+  if (esp_now_init() != ESP_OK)
+  {
     Serial.println("Error initializing ESP-NOW");
     return;
   }
-  
+
   // Once ESPNow is successfully Init, we will register for recv CB to
   // get recv packer info
   esp_now_register_recv_cb(OnDataRecv);
 
-
   // Create tasks
 
-  if (xTaskCreate(
+  /*if (xTaskCreate(
           sensorCheck,
           "*sensorCheck",
           4096,
@@ -99,28 +103,24 @@ void setup()
   {
     Serial.println("Error creating task");
     return;
-  }
-  
+  }*/
 }
 
 void loop()
 {
-
 }
 
-
-void sensorCheck(void* parameters)
+/*void sensorCheck(void *parameters)
 {
   mySensor.readDistance();
   reading = mySensor.getDistance();
 
-  if (reading < 20) //TODO: kan detta läggas in i USsensorklassen istället för hårdkodning? exempelvis i konstruktorn
+  if (reading < 20) // TODO: kan detta läggas in i USsensorklassen istället för hårdkodning? exempelvis i konstruktorn
   {
-    //TODO: Semaphore TAKE
-    
-    //Hinder forward movement någonting någonting
+    // TODO: Semaphore TAKE
 
-    //TODO: Semaphore GIVE
+    // Hinder forward movement någonting någonting
+
+    // TODO: Semaphore GIVE
   }
-}
-
+}*/
