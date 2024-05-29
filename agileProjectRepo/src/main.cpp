@@ -19,7 +19,7 @@ int counter = 0;
 SemaphoreHandle_t myHandle;
 
 void horizontalJoystickRead(void *parameters);
-void verticalJoystickRead(void *parameters);
+//void verticalJoystickRead(void *parameters);
 
 void setup()
 {
@@ -28,13 +28,13 @@ void setup()
   initiate();
 
   Serial.begin(9600);
-  xTaskCreate(
+  /*xTaskCreate(
       verticalJoystickRead,
       "*verticalJoystickRead",
       4096,
       NULL,
       1,
-      NULL);
+      NULL);*/
 
   xTaskCreate(
       horizontalJoystickRead,
@@ -70,11 +70,11 @@ void horizontalJoystickRead(void *parameter)
       xSemaphoreGive(myHandle);
     }
 
-    vTaskDelay(1);
+    vTaskDelay(10);
   }
 }
 
-void verticalJoystickRead(void *parameter)
+/*void verticalJoystickRead(void *parameter)
 {
   for (;;)
   {
@@ -88,4 +88,4 @@ void verticalJoystickRead(void *parameter)
     }
     vTaskDelay(10);
   }
-}
+}*/
