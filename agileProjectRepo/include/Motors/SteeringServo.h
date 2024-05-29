@@ -1,5 +1,4 @@
 #pragma once
-#include <ESP32Servo.h>
 
 
 class SteeringServo
@@ -37,28 +36,9 @@ public:
         myServo.setPeriodHertz(50);
     }
 
-    void SteeringServo::setDirection(int newDirection)
+    void SteeringServo::setDirection(int inDirection)
     {
+        int newDirection = map(inDirection, 0, 4096, 0, 120);
         // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
         myServo.write(newDirection);
-
-
-        /*
-        Maybe something like this to move turning in tiny steps
-
-        int currentPosition = myServo.read();
-
-        if(newDirection > direction && minTurn > direction)
-        {
-            direction--;
-            myServo.write(direction);
-            delay(10;)
-        }
-        if else(newDirection < direction && maxTurn < direction)
-        {
-            direction++;
-            myServo.write(direction);
-            delay(10);
-        }
-        */
     }

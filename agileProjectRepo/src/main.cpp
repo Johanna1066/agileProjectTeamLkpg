@@ -2,13 +2,13 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include <vector>
+#include "ESP32Servo.h"
 
 
 #include "Sensors/USsensor.h"
 #include "Motors/Engine.h"
 #include "Motors/SteeringServo.h"
 #include "steeringFunctions.h"
-
 
 #include "semphr.h"
 
@@ -18,6 +18,7 @@
 
 //Handle för att styra engine
 SemaphoreHandle_t engineHandle;
+SemaphoreHandle_t servoHandle;
 
 
 void sensorCheck(void* parameters);
@@ -31,19 +32,24 @@ void sensorCheck(void* parameters);
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   memcpy(&dataRecieved, incomingData, sizeof(dataRecieved));
   
-  /*TODO: if(dataRecieved matchar enginedata)
+  if (dataRecieved >= 10000)
   {
-    semaphoreTAKE
-    gör data användbar
-    skicka info till engines
-    semaphoreGIVE
+    if (xSemaphoreTake(servoHandle, portMAX_DELAY) == pdTRUE)
+    {
+      dataRecieved -= 10000;
+      myServo.setDirection(dataRecieved);
+      xSemaphoreGive(servoHandle);
+    }
   }
-  else if (dataRecieved matchar servodata)
+
+  if ((dataRecieved >= 0) && (dataRecieved <= 4096))
   {
-    gör data användbar
-    skicka info till servo
+    if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
+    {
+      setEnginesVelocity(dataRecieved);
+      xSemaphoreGive(engineHandle);
+    }
   }
-  */ 
 }
 
 
@@ -54,9 +60,16 @@ void setup()
   Serial.begin(115200);
   // Create semaphore
   engineHandle = xSemaphoreCreateMutex();
+  servoHandle = xSemaphoreCreateMutex();
+
   if (engineHandle == NULL)
   {
-    Serial.println("Error creating semaphore");
+    Serial.println("Error creating engine semaphore");
+    return;
+  }
+  if (servoHandle == NULL)
+  {
+    Serial.println("Error creating servo semaphore");
     return;
   }
 
