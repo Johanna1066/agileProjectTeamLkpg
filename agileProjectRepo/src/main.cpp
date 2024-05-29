@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include "Sensors/Joystick.h"
-/*
 #include <esp_now.h>
 #include <WiFi.h>
 #include "semphr.h"
@@ -12,18 +11,16 @@ void horizontalReadSend(void *parameters);
 void verticalReadSend(void *parameters);
 
 int reading = 0;
+//int tmp{};
 
 esp_now_peer_info_t peerInfo;
 uint8_t broadcastAddress[] = {0xEC, 0xDA, 0x3B, 0x60, 0xCD, 0xB4};
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
-*/
 // REPLACE WITH YOUR RECEIVER MAC Address
 
 Joystick verticalJoystick(A2);
-Joystick horizontalJoystick(A1);
-
-int tmp{};
+Joystick horizontalJoystick(A4);
 
 
 void setup()
@@ -33,7 +30,7 @@ void setup()
   verticalJoystick.initiateJoystick();
   horizontalJoystick.initiateJoystick();
   // Create semaphore
-  /*
+  
   myHandle = xSemaphoreCreateMutex();
   if (myHandle == NULL)
   {
@@ -77,8 +74,8 @@ void setup()
   }
 
   if (xTaskCreate(
-          verticalReadSend,
-          "verticalReadSend",
+          horizontalReadSend,
+          "horizontalReadSend",
           4096,
           NULL,
           1,
@@ -87,13 +84,13 @@ void setup()
     Serial.println("Error creating task");
     return;
   }
-  */
 }
 
 void loop()
 {
   // Main loop does nothing, tasks handle everything
   
+  /*
   verticalJoystick.doReading();
   horizontalJoystick.doReading();
   tmp = verticalJoystick.getValue();
@@ -102,9 +99,10 @@ void loop()
   Serial.printf("horizontalJoystick = %d \n", tmp);
   Serial.println("-----------------------------------");
   delay(1000);
+  */
 }
 
-/*
+
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
   Serial.print("\r\nLast Packet Send Status:\t");
@@ -147,6 +145,9 @@ void horizontalReadSend(void *parameter)
       // Read vertical joystick value
       horizontalJoystick.doReading();
       reading = horizontalJoystick.getValue();
+
+      reading += 10000;
+
       // Send reading
       esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)&reading, sizeof(reading));
       if (result == ESP_OK)
@@ -162,4 +163,3 @@ void horizontalReadSend(void *parameter)
     vTaskDelay(100);
   }
 }
-*/
