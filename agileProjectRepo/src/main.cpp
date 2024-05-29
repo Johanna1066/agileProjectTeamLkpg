@@ -18,6 +18,7 @@ SemaphoreHandle_t engineHandle;
 SemaphoreHandle_t servoHandle;
 
 void sensorCheck(void *parameters);
+void printOut(int);
 
 // Comunication code
 
@@ -124,3 +125,4 @@ void loop()
     // TODO: Semaphore GIVE
   }
 }*/
+
