@@ -23,6 +23,8 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
 Joystick verticalJoystick(A2);
 Joystick horizontalJoystick(A1);
 
+int tmp{};
+
 
 void setup()
 {
@@ -94,9 +96,12 @@ void loop()
   
   verticalJoystick.doReading();
   horizontalJoystick.doReading();
-  Serial.println("verticalJoystick = " + verticalJoystick.getValue());
-  Serial.println("horizontalJoystick = " + horizontalJoystick.getValue());
+  tmp = verticalJoystick.getValue();
+  Serial.printf("verticalJoystick = %d \n", tmp);
+  tmp = horizontalJoystick.getValue();
+  Serial.printf("horizontalJoystick = %d \n", tmp);
   Serial.println("-----------------------------------");
+  delay(1000);
 }
 
 /*
