@@ -11,7 +11,7 @@ void horizontalReadSend(void *parameters);
 void verticalReadSend(void *parameters);
 
 int reading = 0;
-int taskDelay = 750;
+int taskDelay = 10;
 //int tmp{};
 
 esp_now_peer_info_t peerInfo;
@@ -133,7 +133,7 @@ void verticalReadSend(void *parameter)
       }
       xSemaphoreGive(myHandle);
     }
-    vTaskDelay(taskDelay);
+    vTaskDelay(10);
   }
 }
 
@@ -161,6 +161,6 @@ void horizontalReadSend(void *parameter)
       }
       xSemaphoreGive(myHandle);
     }
-    vTaskDelay(taskDelay);
+    vTaskDelay(10);
   }
 }
