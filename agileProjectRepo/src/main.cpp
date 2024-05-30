@@ -67,6 +67,8 @@ void setup()
   engineHandle = xSemaphoreCreateMutex();
   servoHandle = xSemaphoreCreateMutex();
 
+  initiate();
+
   if (engineHandle == NULL)
   {
     Serial.println("Error creating engine semaphore");
