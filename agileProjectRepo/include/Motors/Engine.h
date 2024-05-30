@@ -13,7 +13,7 @@ private:
 public:
     Engine(int velocityPIN, int positivePIN, int negativePIN);
     ~Engine();
-    void setVelocity(int);
+    void setVelocity(int, bool);
     void intitateEngine();
     void directionReverse();
 };
@@ -23,7 +23,6 @@ Engine::Engine(int velocityPIN, int positivePIN, int negativePIN)
     engineVelocityPIN = velocityPIN;
     enginePositivePIN = positivePIN;
     engineNegativePIN = negativePIN;
-    this->intitateEngine();
 }
 
 Engine::~Engine()
@@ -45,18 +44,23 @@ void Engine::directionReverse()
     }
 }
 
-void Engine::setVelocity(int inVelocity)
+void Engine::setVelocity(int inVelocity, bool obsticle)
 {
     int newVelocity = map(inVelocity, 0, 4096, -255, 255);
 
-    if ((newVelocity > -20) && (newVelocity < 20))
+    if ((newVelocity > -50) && (newVelocity < 20))
     {
         newVelocity = 0;
     }
 
-    //Serial.printf("New newVelocity = %d \n", inVelocity);
-    //Serial.printf("Velocity = %d\n", newVelocity);
-    if (inVelocity < 0)
+    if (obsticle && (newVelocity > 0))
+    {
+        newVelocity = 0;
+    }
+
+    // Serial.printf("New newVelocity = %d \n", inVelocity);
+    // Serial.printf("newVelocity = %d\n", newVelocity);
+    if (newVelocity < 0)
     {
         if (direction)
         {
@@ -64,7 +68,7 @@ void Engine::setVelocity(int inVelocity)
             direction = false;
         }
     }
-    else if (inVelocity > 0)
+    else if (newVelocity > 0)
     {
         if (!direction)
         {
@@ -80,6 +84,6 @@ void Engine::intitateEngine()
     pinMode(engineVelocityPIN, OUTPUT);
     pinMode(enginePositivePIN, OUTPUT);
     pinMode(engineNegativePIN, OUTPUT);
-    digitalWrite(enginePositivePIN, LOW);
-    digitalWrite(engineNegativePIN, HIGH);
+    digitalWrite(enginePositivePIN, HIGH);
+    digitalWrite(engineNegativePIN, LOW);
 }

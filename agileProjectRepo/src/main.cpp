@@ -26,19 +26,19 @@ void printOut(int);
 void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
   memcpy(&dataRecieved, incomingData, sizeof(dataRecieved));
-
+  Serial.println(dataRecieved);
   if (dataRecieved >= 10000)
   {
     if (xSemaphoreTake(servoHandle, portMAX_DELAY) == pdTRUE)
     {
-      dataRecieved -= 10000; 
-      if((dataRecieved > 1300)&& (dataRecieved < 1900))
+      dataRecieved -= 10000;
+      if ((dataRecieved > 1300) && (dataRecieved < 1900))
       {
         dataRecieved = 1700;
       }
       myServo.setDirection(dataRecieved);
-      //Serial.print("Servodata: ");
-      //Serial.println(dataRecieved);
+      // Serial.print("Servodata: ");
+      // Serial.println(dataRecieved);
       xSemaphoreGive(servoHandle);
     }
   }
@@ -46,14 +46,15 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
   {
     if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
     {
-      
-      if((dataRecieved > 1300)&& (dataRecieved < 1900))
+
+      if ((dataRecieved > 1300) && (dataRecieved < 1900))
       {
         dataRecieved = 1700;
       }
-      setEnginesVelocity(dataRecieved);
-      //Serial.print("Enginedata: ");
-      //Serial.println(dataRecieved);
+
+      setEnginesVelocity(dataRecieved, hinderForwardMovement);
+      // Serial.print("Enginedata: ");
+      // Serial.println(dataRecieved);
       xSemaphoreGive(engineHandle);
     }
   }
@@ -96,7 +97,7 @@ void setup()
 
   // Create tasks
 
-  /*if (xTaskCreate(
+  if (xTaskCreate(
           sensorCheck,
           "*sensorCheck",
           4096,
@@ -106,25 +107,40 @@ void setup()
   {
     Serial.println("Error creating task");
     return;
-  }*/
+  }
 }
 
 void loop()
 {
 }
 
-/*void sensorCheck(void *parameters)
+void sensorCheck(void *parameters)
 {
-  mySensor.readDistance();
-  reading = mySensor.getDistance();
-
-  if (reading < 20) // TODO: kan detta läggas in i USsensorklassen istället för hårdkodning? exempelvis i konstruktorn
+  for (;;)
   {
-    // TODO: Semaphore TAKE
+    mySensor.readDistance();
+    reading = mySensor.getDistance();
 
-    // Hinder forward movement någonting någonting
+    reading = 200;
 
-    // TODO: Semaphore GIVE
+    if (reading < 20)
+    {
+      if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
+      {
+        hinderForwardMovement = true;
+        xSemaphoreGive(engineHandle);
+      }
+    }
+    else
+    {
+      if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
+      {
+
+        hinderForwardMovement = false;
+        xSemaphoreGive(engineHandle);
+      }
+    }
+
+    vTaskDelay(10);
   }
-}*/
-
+}

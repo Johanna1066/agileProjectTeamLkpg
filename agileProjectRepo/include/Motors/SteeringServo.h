@@ -3,7 +3,7 @@
 class SteeringServo
 {
 private:
-    int direction{};
+    int direction{60};
     int servoPIN{};
 
     Servo servoObject;
@@ -39,6 +39,5 @@ void SteeringServo::setDirection(int inDirection)
 {
     int newDirection = map(inDirection, 0, 4096, 0, 120);
     // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
-    Serial.println(newDirection);
     servoObject.write(newDirection);
 }
