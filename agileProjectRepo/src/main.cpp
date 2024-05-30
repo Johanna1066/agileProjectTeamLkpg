@@ -12,7 +12,6 @@ void verticalReadSend(void *parameters);
 
 int reading = 0;
 int taskDelay = 10;
-//int tmp{};
 
 esp_now_peer_info_t peerInfo;
 uint8_t broadcastAddress[] = {0xEC, 0xDA, 0x3B, 0x60, 0xCD, 0xB4};
@@ -23,7 +22,6 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
 Joystick verticalJoystick(A2);
 Joystick horizontalJoystick(A4);
 
-
 void setup()
 {
   // Init Serial Monitor
@@ -31,7 +29,7 @@ void setup()
   verticalJoystick.initiateJoystick();
   horizontalJoystick.initiateJoystick();
   // Create semaphore
-  
+
   myHandle = xSemaphoreCreateMutex();
   if (myHandle == NULL)
   {
@@ -90,7 +88,7 @@ void setup()
 void loop()
 {
   // Main loop does nothing, tasks handle everything
-  
+
   /*
   verticalJoystick.doReading();
   horizontalJoystick.doReading();
@@ -103,11 +101,10 @@ void loop()
   */
 }
 
-
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
-  Serial.print("\r\nLast Packet Send Status:\t");
-  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  // Serial.print("\r\nLast Packet Send Status:\t");
+  // Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
 void verticalReadSend(void *parameter)
@@ -121,19 +118,21 @@ void verticalReadSend(void *parameter)
       reading = verticalJoystick.getValue();
       // Send reading
 
-      //TODO: add differentiation between what this and the next task sends
+      // TODO: add differentiation between what this and the next task sends
       esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)&reading, sizeof(reading));
       if (result == ESP_OK)
       {
-        Serial.println("Sent with success");
+        // Serial.println("Sent with success");
       }
       else
       {
-        Serial.println("Error sending the data");
+        // Serial.println("Error sending the data");
       }
+      Serial.print("vertical: ");
+      Serial.println(reading);
       xSemaphoreGive(myHandle);
     }
-    vTaskDelay(10);
+    vTaskDelay(500);
   }
 }
 
@@ -153,14 +152,16 @@ void horizontalReadSend(void *parameter)
       esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)&reading, sizeof(reading));
       if (result == ESP_OK)
       {
-        Serial.println("Sent with success");
+        // Serial.println("Sent with success");
       }
       else
       {
-        Serial.println("Error sending the data");
+        // Serial.println("Error sending the data");
       }
+      Serial.print("horizontal: ");
+      Serial.println(reading);
       xSemaphoreGive(myHandle);
     }
-    vTaskDelay(10);
+    vTaskDelay(500);
   }
 }
