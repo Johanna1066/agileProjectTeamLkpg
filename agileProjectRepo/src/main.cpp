@@ -4,6 +4,7 @@
 #include <vector>
 #include "ESP32Servo.h"
 
+
 #include "Sensors/USsensor.h"
 #include "Motors/Engine.h"
 #include "Motors/SteeringServo.h"
@@ -120,8 +121,6 @@ void sensorCheck(void *parameters)
   {
     mySensor.readDistance();
     reading = mySensor.getDistance();
-
-    reading = 200;
 
     if (reading < 20)
     {
