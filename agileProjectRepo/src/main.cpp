@@ -4,7 +4,6 @@
 #include <vector>
 #include "ESP32Servo.h"
 
-
 #include "Sensors/USsensor.h"
 #include "Motors/Engine.h"
 #include "Motors/SteeringServo.h"
@@ -27,16 +26,15 @@ void printOut(int);
 void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
   memcpy(&dataRecieved, incomingData, sizeof(dataRecieved));
-  
+
   if (dataRecieved >= 10000)
   {
     if (xSemaphoreTake(servoHandle, portMAX_DELAY) == pdTRUE)
     {
       dataRecieved -= 10000;
-     
+
       myServo.setDirection(dataRecieved);
-      // Serial.print("Servodata: ");
-      // Serial.println(dataRecieved);
+      delay(1);
       xSemaphoreGive(servoHandle);
     }
   }
@@ -45,8 +43,8 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
     if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
     {
 
-
       setEnginesVelocity(dataRecieved, hinderForwardMovement);
+      delay(1);
       // Serial.print("Enginedata: ");
       // Serial.println(dataRecieved);
       xSemaphoreGive(engineHandle);

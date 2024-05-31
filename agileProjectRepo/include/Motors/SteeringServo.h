@@ -37,7 +37,7 @@ void SteeringServo::initiateServo()
 
 void SteeringServo::setDirection(int inDirection)
 {
-    int newDirection = map(inDirection, 0, 4096, 0, 120);
+    int newDirection = map(inDirection, 0, 4096, 0, 119);
     Serial.println(newDirection);
     // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
     servoObject.write(newDirection);
