@@ -115,8 +115,6 @@ void sensorCheck(void *parameters)
     mySensor.readDistance();
     reading = mySensor.getDistance();
 
-    reading = 200; //Temporary removal ov antikrash
-
     if (reading < 20)
     {
       if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
