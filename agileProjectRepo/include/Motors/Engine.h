@@ -48,6 +48,7 @@ void Engine::setVelocity(int inVelocity, bool obsticle)
 {
     int newVelocity = map(inVelocity, 0, 4096, -255, 255);
 
+   
     if ((newVelocity > -50) && (newVelocity < 20))
     {
         newVelocity = 0;

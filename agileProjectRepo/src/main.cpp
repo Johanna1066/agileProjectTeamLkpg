@@ -26,16 +26,13 @@ void printOut(int);
 void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
   memcpy(&dataRecieved, incomingData, sizeof(dataRecieved));
-  Serial.println(dataRecieved);
+  
   if (dataRecieved >= 10000)
   {
     if (xSemaphoreTake(servoHandle, portMAX_DELAY) == pdTRUE)
     {
       dataRecieved -= 10000;
-      if ((dataRecieved > 1300) && (dataRecieved < 1900))
-      {
-        dataRecieved = 1700;
-      }
+     
       myServo.setDirection(dataRecieved);
       // Serial.print("Servodata: ");
       // Serial.println(dataRecieved);
@@ -47,10 +44,6 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
     if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
     {
 
-      if ((dataRecieved > 1300) && (dataRecieved < 1900))
-      {
-        dataRecieved = 1700;
-      }
 
       setEnginesVelocity(dataRecieved, hinderForwardMovement);
       // Serial.print("Enginedata: ");
@@ -121,7 +114,7 @@ void sensorCheck(void *parameters)
     mySensor.readDistance();
     reading = mySensor.getDistance();
 
-    reading = 200;
+    reading = 200; //Temporary removal ov antikrash
 
     if (reading < 20)
     {
