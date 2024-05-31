@@ -1,70 +1,145 @@
 #include <Arduino.h>
-#include <iostream>
+#include <esp_now.h>
+#include <WiFi.h>
 #include <vector>
+#include "ESP32Servo.h"
+
+
+#include "Sensors/USsensor.h"
+#include "Motors/Engine.h"
+#include "Motors/SteeringServo.h"
+#include "steeringFunctions.h"
 
 #include "semphr.h"
 
+// Car code
 
+// Handle för att styra engine
+SemaphoreHandle_t engineHandle;
+SemaphoreHandle_t servoHandle;
 
-// xSemaphoreTake(),, xSemaphoreGive()
+void sensorCheck(void *parameters);
+void printOut(int);
 
-int counter = 0;
-SemaphoreHandle_t myHandle;
-void myFunctionAdd(void *parameters);
-void myFunctionPrint(void *parameters);
+// Comunication code
 
+// callback function that will be executed when data is received
+void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
+{
+  memcpy(&dataRecieved, incomingData, sizeof(dataRecieved));
+  Serial.println(dataRecieved);
+  if (dataRecieved >= 10000)
+  {
+    if (xSemaphoreTake(servoHandle, portMAX_DELAY) == pdTRUE)
+    {
+      dataRecieved -= 10000;
+      if ((dataRecieved > 1300) && (dataRecieved < 1900))
+      {
+        dataRecieved = 1700;
+      }
+      myServo.setDirection(dataRecieved);
+      // Serial.print("Servodata: ");
+      // Serial.println(dataRecieved);
+      xSemaphoreGive(servoHandle);
+    }
+  }
+  else if ((dataRecieved >= 0) && (dataRecieved <= 4096))
+  {
+    if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
+    {
+
+      if ((dataRecieved > 1300) && (dataRecieved < 1900))
+      {
+        dataRecieved = 1700;
+      }
+
+      setEnginesVelocity(dataRecieved, hinderForwardMovement);
+      // Serial.print("Enginedata: ");
+      // Serial.println(dataRecieved);
+      xSemaphoreGive(engineHandle);
+    }
+  }
+}
 
 void setup()
 {
-    myHandle = xSemaphoreCreateMutex();
+  // Init Serial Monitor
+  Serial.begin(115200);
+  // Create semaphore
+  engineHandle = xSemaphoreCreateMutex();
+  servoHandle = xSemaphoreCreateMutex();
 
-    Serial.begin(9600);
-  xTaskCreate(
-    myFunctionAdd,
-    "*myFunctionAdd",
-    2048,
-    NULL,
-    1,
-    NULL
-    );
+  initiate();
 
-     xTaskCreate(
-    myFunctionPrint,
-    "*myFunctionPrint",
-    2048,
-    NULL,
-    1,
-    NULL
-    );
-}
+  if (engineHandle == NULL)
+  {
+    Serial.println("Error creating engine semaphore");
+    return;
+  }
+  if (servoHandle == NULL)
+  {
+    Serial.println("Error creating servo semaphore");
+    return;
+  }
 
-void myFunctionAdd(void *parameter){
-   for (;;)
-   {
-    if (xSemaphoreTake(myHandle, portMAX_DELAY) == pdTRUE) {  // Use portMAX_DELAY to block indefinitely
-            counter++;
-            xSemaphoreGive(myHandle);
-        }
-    
-    vTaskDelay(100);
-   }
-}
+  // Set device as a Wi-Fi Station
+  WiFi.mode(WIFI_STA);
 
-void myFunctionPrint(void *parameter){
-    for (;;)
-    {
-        if (xSemaphoreTake(myHandle, portMAX_DELAY) == pdTRUE) {
-            Serial.println(counter);
-            xSemaphoreGive(myHandle);
-        }
-        vTaskDelay(1000);
-    }
+  // Init ESP-NOW
+  if (esp_now_init() != ESP_OK)
+  {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+  }
 
+  // Once ESPNow is successfully Init, we will register for recv CB to
+  // get recv packer info
+  esp_now_register_recv_cb(OnDataRecv);
+
+  // Create tasks
+
+  if (xTaskCreate(
+          sensorCheck,
+          "*sensorCheck",
+          4096,
+          NULL,
+          1,
+          NULL) != pdPASS)
+  {
+    Serial.println("Error creating task");
+    return;
+  }
 }
 
 void loop()
 {
+}
 
+void sensorCheck(void *parameters)
+{
+  for (;;)
+  {
+    mySensor.readDistance();
+    reading = mySensor.getDistance();
 
-  
+    if (reading < 20)
+    {
+      if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
+      {
+        hinderForwardMovement = true;
+        xSemaphoreGive(engineHandle);
+      }
+    }
+    else
+    {
+      if (xSemaphoreTake(engineHandle, portMAX_DELAY) == pdTRUE)
+      {
+
+        hinderForwardMovement = false;
+        xSemaphoreGive(engineHandle);
+      }
+    }
+
+    vTaskDelay(10);
+  }
 }
