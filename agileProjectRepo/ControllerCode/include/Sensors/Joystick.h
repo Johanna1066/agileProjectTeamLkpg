@@ -1,7 +1,6 @@
-#include <Arduino.h>
 /*
 Joystick class
-Each object of Joystick class controlls one joystick direction.
+Each object of the Joystick class controlls one joystick direction.
 
 joystickAnalogPIN is the pin of the joystick Axis the object is going to read values from.
 currentValue is used in method doReading to set the current value
