@@ -1,12 +1,4 @@
-#include <Arduino.h>
-
-
-#include "Sensors/USsensor.h"
-#include "Motors/Engine.h"
-#include "Motors/SteeringServo.h"
 #include "steeringFunctions.h"
-
-
 
 // Car code
 

@@ -1,7 +1,13 @@
+#include <Arduino.h>
 #include <esp_now.h>
 #include <WiFi.h>
 #include <vector>
 #include "semphr.h"
+
+#include "Sensors/USsensor.h"
+#include "Motors/Engine.h"
+#include "Motors/SteeringServo.h"
+
 
 /*
 Header file containing all of the funtions and globlal variables
