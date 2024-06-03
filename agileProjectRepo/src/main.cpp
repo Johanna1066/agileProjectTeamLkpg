@@ -132,7 +132,7 @@ void verticalReadSend(void *parameter)
       Serial.println(reading);
       xSemaphoreGive(myHandle);
     }
-    vTaskDelay(500);
+    vTaskDelay(5);
   }
 }
 
@@ -162,6 +162,6 @@ void horizontalReadSend(void *parameter)
       Serial.println(reading);
       xSemaphoreGive(myHandle);
     }
-    vTaskDelay(500);
+    vTaskDelay(5);
   }
 }
