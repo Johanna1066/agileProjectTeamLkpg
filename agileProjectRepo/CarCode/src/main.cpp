@@ -18,9 +18,6 @@ SemaphoreHandle_t engineHandle;
 SemaphoreHandle_t servoHandle;
 
 void sensorCheck(void *parameters);
-void printOut(int);
-
-// Comunication code
 
 // callback function that will be executed when data is received
 void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
@@ -45,8 +42,6 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 
             setEnginesVelocity(dataRecieved, hinderForwardMovement);
             delay(1);
-            // Serial.print("Enginedata: ");
-            // Serial.println(dataRecieved);
             xSemaphoreGive(engineHandle);
         }
     }
@@ -54,13 +49,19 @@ void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 
 void setup()
 {
-    // Init Serial Monitor
+
     Serial.begin(115200);
-    // Create semaphore
+
     engineHandle = xSemaphoreCreateMutex();
     servoHandle = xSemaphoreCreateMutex();
 
     initiate();
+
+    if (xTaskCreate(sensorCheck, "*sensorCheck", 4096, NULL, 1, NULL) != pdPASS)
+    {
+        Serial.println("Error creating task");
+        return;
+    }
 
     if (engineHandle == NULL)
     {
@@ -73,10 +74,8 @@ void setup()
         return;
     }
 
-    // Set device as a Wi-Fi Station
     WiFi.mode(WIFI_STA);
 
-    // Init ESP-NOW
     if (esp_now_init() != ESP_OK)
     {
         Serial.println("Error initializing ESP-NOW");
@@ -86,20 +85,6 @@ void setup()
     // Once ESPNow is successfully Init, we will register for recv CB to
     // get recv packer info
     esp_now_register_recv_cb(OnDataRecv);
-
-    // Create tasks
-
-    if (xTaskCreate(
-            sensorCheck,
-            "*sensorCheck",
-            4096,
-            NULL,
-            1,
-            NULL) != pdPASS)
-    {
-        Serial.println("Error creating task");
-        return;
-    }
 }
 
 void loop()

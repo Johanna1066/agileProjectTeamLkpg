@@ -10,8 +10,8 @@ SteeringServo myServo(9);
 USsensor mySensor(D8, D7); // TODO: Change to correct PINs
 
 int reading{};
+int safeServoDistance{20};
 int dataRecieved{};
-
 int engineSpeed{};
 uint8_t direction{};
 bool hinderForwardMovement = false;

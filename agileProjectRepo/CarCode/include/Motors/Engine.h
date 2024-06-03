@@ -1,5 +1,21 @@
 #pragma once
 
+/*
+The Engine class is responsible for controlling the speed of the engines.
+The members engineVelocityPIN, enginePositivePIN and engineNegativePIN are
+the hardware connection and need to be initiated when an engine object is created.
+
+The bool direction keeps track if the engine is currently going backwards or forward.
+
+The class has three methods; setVelocity - takes two arguments, the int inVelocity that
+                                           should be the desired new velocity for the engine,
+                                           and the bool obsticle that should be true of there is
+                                           an obsticle in the way and the engine shoul hinder
+                                           movement forwards.
+                             directionReverse -
+
+*/
+
 class Engine
 {
 private:
@@ -7,7 +23,6 @@ private:
     int enginePositivePIN{};
     int engineNegativePIN{};
 
-    int newVelocity{};
     bool direction{true}; // true = forward, false = backwards
 
 public:
@@ -31,7 +46,6 @@ Engine::~Engine()
 
 void Engine::directionReverse()
 {
-    // May change depending on connection to enginedriver hardware
     if (direction)
     {
         digitalWrite(enginePositivePIN, LOW);
@@ -58,8 +72,6 @@ void Engine::setVelocity(int inVelocity, bool obsticle)
         newVelocity = 0;
     }
 
-    // Serial.printf("New newVelocity = %d \n", inVelocity);
-    // Serial.printf("newVelocity = %d\n", newVelocity);
     if (newVelocity < 0)
     {
         if (direction)
