@@ -1,4 +1,4 @@
-#pragma once
+#include "ESP32Servo.h"
 
 /*
 The SteeringServo class is responsible for controlling the servos

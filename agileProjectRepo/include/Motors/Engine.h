@@ -1,5 +1,3 @@
-#pragma once
-
 /*
 The Engine class is responsible for controlling the speed of the engines.
 The members engineVelocityPIN, enginePositivePIN and engineNegativePIN are

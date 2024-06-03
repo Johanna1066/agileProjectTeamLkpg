@@ -1,7 +1,7 @@
-#pragma once
+
 /*
 The sensor class is responsible for controlling the ultra sonic sensors
- of the car. The members sensorTriggerPIN and sensorRecieverPIN are the 
+ of the car. The members sensorTriggerPIN and sensorRecieverPIN are the
  hardware connection and need to be given when a sensor object is created.
 
 distance(int) keeps track of the value of the latest reading of the sensor

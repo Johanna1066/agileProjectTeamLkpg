@@ -1,29 +1,33 @@
-#pragma once
+#include <esp_now.h>
+#include <WiFi.h>
+#include <vector>
+#include "semphr.h"
 
 /*
 Header file containing all of the funtions and globlal variables
 used by main.cpp to run the car.
 
-setEnginevelocity(int velocity, bool obsticle) - loops thorugh the vector of engine objects and sets all
-                                                 their velocities to the inargument velocity.
+setEnginevelocity(int velocity, bool obsticle) -
+            loops thorugh the vector of engine objects and sets all
+            their velocities to the inargument velocity.
 
 
-OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) - function that runs when the controller sends
-                                                 any data to the car. Depending on the data recieved it's either
-                                                 handled as a engine command or it's handled as a servo command.
-
-
-
-intitate - Initiate runs at the start of setup() in main.cpp and makes sure that the hardware, the communcations
- and the mutex handles are all initiated.
+OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) -
+            function that runs when the controller sends
+            any data to the car. Depending on the data recieved it's either
+            handled as a engine command or it's handled as a servo command.
 
 
 
+intitate -
+            Initiate runs at the start of setup() in main.cpp and makes sure
+            that the hardware is initiated, the communication protocol is initiated
+            and set up correctly and the semaphore mutex handles are created.
 
-sensorcheck
 
-
-
+sensorcheck -
+            Makes a reading on the sensor object and depending on the result the bool
+            hinderForwardMovement is ser to true or false.
 
 */
 

@@ -1,15 +1,12 @@
 #include <Arduino.h>
-#include <esp_now.h>
-#include <WiFi.h>
-#include <vector>
-#include "ESP32Servo.h"
+
 
 #include "Sensors/USsensor.h"
 #include "Motors/Engine.h"
 #include "Motors/SteeringServo.h"
 #include "steeringFunctions.h"
 
-#include "semphr.h"
+
 
 // Car code
 
