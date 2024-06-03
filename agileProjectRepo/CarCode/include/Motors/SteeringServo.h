@@ -1,22 +1,44 @@
-class SteeringServo
+#pragma once
 
+class SteeringServo
 {
 private:
-    // TODO: Add PINs
-    int direction{};
+    int direction{60};
+    int servoPIN{};
+
+    Servo servoObject;
 
 public:
-    SteeringServo()
-    {
-    }
+    SteeringServo(int engineServoPIN);
 
-    ~SteeringServo()
-    {
-        // delete direction;
-    }
+    ~SteeringServo();
 
-    void setDirection(int newDirection)
-    {
-        // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
-    }
+    void initiateServo();
+
+    void setDirection(int newDirection);
 };
+
+SteeringServo::SteeringServo(int engineServoPIN)
+{
+    servoPIN = engineServoPIN;
+}
+
+SteeringServo::~SteeringServo()
+{
+    // delete direction;
+}
+
+void SteeringServo::initiateServo()
+{
+    servoObject.attach(servoPIN);
+    servoObject.write(60);
+    servoObject.setPeriodHertz(50);
+}
+
+void SteeringServo::setDirection(int inDirection)
+{
+    int newDirection = map(inDirection, 0, 4096, 0, 119);
+    Serial.println(newDirection);
+    // IDEA: Decide velocity by moving the pointer in tiny steps with delay??
+    servoObject.write(newDirection);
+}
