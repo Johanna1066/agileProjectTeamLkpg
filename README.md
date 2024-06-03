@@ -1,9 +1,9 @@
 This is the code for the controller for the RC-car.
 The components we used to build our controller was:
-  2 Analog Joysticks
-  1 Arduino Nano ESP 32
-  1 Breadboard 5v PSU
-  1 Breadboard
+  + 2 Analog Joysticks
+  + 1 Arduino Nano ESP 32
+  + 1 Breadboard 5v PSU
+  + 1 Breadboard
   + cables
 
 We also used these librarys; Arduino.h, esp_now.h, WiFi.h and semphr.h
