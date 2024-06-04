@@ -1,77 +1,32 @@
 /*
-Joystick class
-Each object of the Joystick class controlls one joystick direction.
-
-joystickAnalogPIN is the pin of the joystick Axis the object is going to read values from.
-currentValue is used in method doReading to set the current value
-initialCenter used once in initiateJoystick 
-    We only use this because our joystick gave us odd center values and could sometimes give us +/- 10% of the value we had last time we used the program.
-
-Joystick have three methods; initiateJoystick, used in setup and uses the joystickAnalogPIN to assaign PIN to joystick
-                             doReading, sets currentValue based on joystick value and remaps it according to our map
-                             getValue, returns currentValue using map
-
-How map works;  Create Arduino map()
-                long map(long x, long in_min, long in_max, long out_min, long out_max)
-                x is input value
-                in_min is current lowest input value aviable
-                in_max is current max input value aviable
-                out_min is new lowest allowed value aviable
-                out_max is new max allowed value aviable   
-
-#ifndef Joystick.cpp
-#define Joystick.cpp
+*Joystick class
+*Each object of the Joystick class controlls one joystick direction.
+*
+*default constructor Joystick(int) require an arduino PIN to function.
+*So Joystick can read and get values from our joystick.
+*
+*Joystick have 3 methods; initiateJoystick(), doReading(), getValue()
+*
+*Joystick have 3 private variables; joystickAnalogPIN, currentValue and initialCenter
 */
 class Joystick
 {
 private:
+    //joystickAnalogPIN, used in initiateJoystick. Gets its value from constructor Joystick(int PIN)
     int joystickAnalogPIN{};
+    //currentValue, saves the joysticks current value in doReading()
     int currentValue{};
+    //initialCenter, used to find and map the center value of the joysticks
     int initialCenter{};
 public:
+    //Joystick(int), saves a int PIN that the object is going to use and read
     Joystick(int pinIN);
 
     ~Joystick();
-
+    //initiateJoystick(), used in setup and uses the joystickAnalogPIN to assaign PIN to joystick
     void initiateJoystick();
-
+    //doReading(), sets currentValue based on joystick value and remaps it according to our map
     void doReading();
-
+    //getValue(), returns currentValue using map
     int getValue();
 };
-/*
-Joystick::Joystick(int pinIN)
-{
-    joystickAnalogPIN = pinIN;
-}
-
-Joystick::~Joystick()
-{
-}
-
-void Joystick::initiateJoystick()
-{
-    pinMode(joystickAnalogPIN, INPUT);
-    initialCenter = analogRead(joystickAnalogPIN);
-}
-
-void Joystick::doReading()
-{
-    int read = analogRead(joystickAnalogPIN);
-
-    if (read <= initialCenter)
-    {
-        currentValue = map(read, 0, initialCenter, 0, 2048);
-    }
-    else
-    {
-        currentValue = map(read, initialCenter, 4095, 2049, 4095);
-    }
-}
-
-int Joystick::getValue()
-{
-    return currentValue;
-}
-
-#endif*/

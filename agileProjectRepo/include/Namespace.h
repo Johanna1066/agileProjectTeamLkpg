@@ -7,7 +7,6 @@ myHandle; A handle that locks task and makes tasks unable change certain variabl
 peerInfo; Hanles info about WiFi communication
 broadcastAddress; is the MAC adress this unit is trying to connect to
 */
-
 namespace controllerNames{
     int reading{};
     Joystick verticalJoystick(A2);
