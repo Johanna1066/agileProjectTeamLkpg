@@ -1,16 +1,31 @@
-#pragma once
-//------Joystick---------
+/*
+Joystick class
+Each object of the Joystick class controlls one joystick direction.
 
-// enumeration to decide wich type the joystick object is
+joystickAnalogPIN is the pin of the joystick Axis the object is going to read values from.
+currentValue is used in method doReading to set the current value
+initialCenter used once in initiateJoystick 
+    We only use this because our joystick gave us odd center values and could sometimes give us +/- 10% of the value we had last time we used the program.
+
+Joystick have three methods; initiateJoystick, used in setup and uses the joystickAnalogPIN to assaign PIN to joystick
+                             doReading, sets currentValue based on joystick value and remaps it according to our map
+                             getValue, returns currentValue using map
+
+How map works;  Create Arduino map()
+                long map(long x, long in_min, long in_max, long out_min, long out_max)
+                x is input value
+                in_min is current lowest input value aviable
+                in_max is current max input value aviable
+                out_min is new lowest allowed value aviable
+                out_max is new max allowed value aviable   
+*/
 
 class Joystick
 {
 private:
-    int joystickPIN{};
-    int value{};
-
-    int center{};
-
+    int joystickAnalogPIN{};
+    int currentValue{};
+    int initialCenter{};
 public:
     Joystick(int pinIN);
 
@@ -25,7 +40,7 @@ public:
 
 Joystick::Joystick(int pinIN)
 {
-    joystickPIN = pinIN;
+    joystickAnalogPIN = pinIN;
 }
 
 Joystick::~Joystick()
@@ -34,25 +49,25 @@ Joystick::~Joystick()
 
 void Joystick::initiateJoystick()
 {
-    pinMode(joystickPIN, INPUT);
-    center = analogRead(joystickPIN); // TODO: kalibrera om genom att trycka på knappen?
+    pinMode(joystickAnalogPIN, INPUT);
+    initialCenter = analogRead(joystickAnalogPIN);
 }
 
 void Joystick::doReading()
 {
-    int read = analogRead(joystickPIN);
+    int read = analogRead(joystickAnalogPIN);
 
-    if (read <= center)
+    if (read <= initialCenter)
     {
-        value = map(read, 0, center, 0, 2048);
+        currentValue = map(read, 0, initialCenter, 0, 2048);
     }
     else
     {
-        value = map(read, center, 4095, 2049, 4095);
+        currentValue = map(read, initialCenter, 4095, 2049, 4095);
     }
 }
 
 int Joystick::getValue()
 {
-    return value;
+    return currentValue;
 }
