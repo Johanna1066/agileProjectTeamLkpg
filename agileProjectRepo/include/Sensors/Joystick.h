@@ -18,8 +18,10 @@ How map works;  Create Arduino map()
                 in_max is current max input value aviable
                 out_min is new lowest allowed value aviable
                 out_max is new max allowed value aviable   
-*/
 
+#ifndef Joystick.cpp
+#define Joystick.cpp
+*/
 class Joystick
 {
 private:
@@ -37,7 +39,7 @@ public:
 
     int getValue();
 };
-
+/*
 Joystick::Joystick(int pinIN)
 {
     joystickAnalogPIN = pinIN;
@@ -71,3 +73,5 @@ int Joystick::getValue()
 {
     return currentValue;
 }
+
+#endif*/

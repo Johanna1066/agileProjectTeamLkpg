@@ -7,13 +7,13 @@ Sending code to another 'Arduino nano ESP32' over WiFi using the recivers MAC ad
 
 Using the esp_now protocol to connect to another 'Arduino nano ESP32' without having to connect to a network
 */
+
 #include <Arduino.h>
 #include "Sensors/Joystick.h"
 #include <esp_now.h>
 #include <WiFi.h>
 #include "semphr.h"
 #include "Namespace.h"
-
 
 void horizontalReadSend(void *parameters);
 void verticalReadSend(void *parameters);
