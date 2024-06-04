@@ -1,16 +1,13 @@
 /*
+ * main.cpp
+ */
 
-
-
-*/
+#include <Arduino.h>
+#include <esp_now.h>
+#include <WiFi.h>
+#include <vector>
 
 #include "steeringFunctions.h"
-
-
-
-
-void sensorCheck(void *parameters);
-
 
 void setup()
 {

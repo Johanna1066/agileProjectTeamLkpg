@@ -1,3 +1,7 @@
+/*
+ * USsensor.cpp
+ */
+
 #include <Arduino.h>
 #include "Sensors/USsensor.h"
 
@@ -6,7 +10,6 @@ USsensor::USsensor(int triggerPIN, int recieverPIN)
     sensorTriggerPIN = triggerPIN;
     sensorRecieverPIN = recieverPIN;
 }
-
 
 void USsensor::initiateUSsensor()
 {

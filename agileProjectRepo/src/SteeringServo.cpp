@@ -1,3 +1,7 @@
+/*
+ * SteeringServo.cpp
+ */
+
 #include <Arduino.h>
 #include "Motors/SteeringServo.h"
 
@@ -20,9 +24,9 @@ void SteeringServo::initiateServo()
 
 void SteeringServo::setDirection(int inDirection)
 {
-    //The servo used is a 120 degree servo and requires a 
-    // input value between 0 and 120, therefore the input
-    // is remapped.
+    // The servo used is a 120 degree servo and requires a
+    //  input value between 0 and 120, therefore the input
+    //  is remapped.
     int newDirection = map(inDirection, 0, 4096, 0, 120);
     if (newDirection == direction)
     {
