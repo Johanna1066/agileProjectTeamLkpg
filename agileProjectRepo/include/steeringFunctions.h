@@ -1,41 +1,40 @@
+/*
+ * Header file containing all of the function definitions and globlal variables
+ * used by main.cpp to run the car.
+ *
+ * setEnginevelocity(int velocity, bool obsticle) -
+ *            loops thorugh the vector of engine objects and sets all
+ *            their velocities and/or direction accordingly to the inarguments.
+ *
+ *
+ * OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) -
+ *            function that runs when the controller esp32 sends
+ *            any data to the car esp32. Depending on the data recieved it's
+ *            either handled as a engine command or as a servo command.
+ *
+ *
+ * intitate -
+ *            Initiate runs at the start of setup() in main.cpp and makes sure
+ *            that the hardware is initiated, the communication protocol is
+ *            initiated and set up correctly and the semaphore mutex handles
+ *            are created.
+ *
+ *
+ * sensorcheck -
+ *            Makes a reading of the sensor object and if there is the bool
+ *            hinderForwardMovement is set to true, if it's not the bool is set
+ *            to false.
+ *
+ */
+
 #include <Arduino.h>
 #include <esp_now.h>
 #include <WiFi.h>
 #include <vector>
-#include "semphr.h"
 
 #include "Sensors/USsensor.h"
 #include "Motors/Engine.h"
 #include "Motors/SteeringServo.h"
-
-
-/*
-Header file containing all of the funtions and globlal variables
-used by main.cpp to run the car.
-
-setEnginevelocity(int velocity, bool obsticle) -
-            loops thorugh the vector of engine objects and sets all
-            their velocities to the inargument velocity.
-
-
-OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) -
-            function that runs when the controller sends
-            any data to the car. Depending on the data recieved it's either
-            handled as a engine command or it's handled as a servo command.
-
-
-
-intitate -
-            Initiate runs at the start of setup() in main.cpp and makes sure
-            that the hardware is initiated, the communication protocol is initiated
-            and set up correctly and the semaphore mutex handles are created.
-
-
-sensorcheck -
-            Makes a reading on the sensor object and depending on the result the bool
-            hinderForwardMovement is ser to true or false.
-
-*/
 
 std::vector<Engine> engines;
 Engine right(A1, D5, D6);
@@ -52,6 +51,14 @@ bool hinderForwardMovement = false;
 int reading{};
 int dataRecieved{};
 
+// Goes thorugh the vector of engine objects and adjusts their direction and/or velocity
+void setEnginesVelocity(int, bool);
+
+// Handles recieved data and sends it to either engines or servo
+void onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len);
+
+void initate();
+
 void setEnginesVelocity(int velocity, bool obsticle)
 {
     for (auto &engine : engines)
@@ -60,7 +67,7 @@ void setEnginesVelocity(int velocity, bool obsticle)
     }
 }
 
-void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
+void onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
     memcpy(&dataRecieved, incomingData, sizeof(dataRecieved));
 
@@ -116,7 +123,7 @@ void initiate()
         Serial.println("Error initializing ESP-NOW");
         return;
     }
-    esp_now_register_recv_cb(OnDataRecv);
+    esp_now_register_recv_cb(onDataRecv);
 }
 
 void sensorCheck(void *parameters)

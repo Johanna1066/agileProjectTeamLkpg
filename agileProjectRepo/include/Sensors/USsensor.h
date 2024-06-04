@@ -7,10 +7,11 @@ The sensor class is responsible for controlling the ultra sonic sensors
 distance(int) keeps track of the value of the latest reading of the sensor
  and is a distance in cm.
 
- The class has three methods; initiateSensor - does all of the necessary electronic setup for the
-                                               hardware to work properly.
-                              getDistance - returns the most current sensor reading.
-                              readDistance - does a new reading of the sensor and updates distance.
+ The class has three methods:
+            initiateSensor - does all of the necessary electronic setup for the
+                             hardware to work properly.
+               getDistance - returns the most current sensor reading.
+              readDistance - does a new reading of the sensor and updates distance.
 
 */
 
