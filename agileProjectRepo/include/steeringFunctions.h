@@ -130,8 +130,8 @@ void sensorCheck(void *parameters)
 {
     for (;;)
     {
-        mySensor.readDistance();
-        reading = mySensor.getDistance();
+        mySensor.USsensor::readDistance();
+        reading = mySensor.USsensor::getDistance();
 
         if (reading < safeServoDistance)
         {
