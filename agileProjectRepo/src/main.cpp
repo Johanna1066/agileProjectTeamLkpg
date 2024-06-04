@@ -1,15 +1,16 @@
-/* 
- * 
- * 
- * 
- * 
- * 
- * 
- */
+/*
+
+
+
+*/
 
 #include "steeringFunctions.h"
 
+
+
+
 void sensorCheck(void *parameters);
+
 
 void setup()
 {
