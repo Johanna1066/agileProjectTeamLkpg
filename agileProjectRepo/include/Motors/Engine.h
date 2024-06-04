@@ -19,7 +19,6 @@ The class has three methods:
    intitateEngine - does all of the necessary electronic setup for the
                     hardware to work properly.
 */
-
 class Engine
 {
 private:
