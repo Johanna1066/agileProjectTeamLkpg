@@ -1,3 +1,13 @@
+/*
+Namespace for hand-controller
+reading; used to store data from joystick and send data to reciver arduino
+verticalJoystick; A joystick object that is used to get vertical joystick readings
+horizontalJoystick; A joystick object that is used to get horizontal joystick readings
+myHandle; A handle that locks task and makes tasks unable change certain variables without having access to this handle
+peerInfo; Hanles info about WiFi communication
+broadcastAddress; is the MAC adress this unit is trying to connect to
+*/
+
 namespace controllerNames{
     int reading{};
     Joystick verticalJoystick(A2);

@@ -1,3 +1,12 @@
+/*
+https://github.com/Johanna1066/agileProjectTeamLkpg/
+Controller arduino code for a 'Arduino nano ESP32'
+Using object oriented code. Joystick objects get assigned a PIN that can read the joystick directions
+Using tasks to allow signal inputs from both joysticks
+Sending code to another 'Arduino nano ESP32' over WiFi using the recivers MAC adress
+
+Using the esp_now protocol to connect to another 'Arduino nano ESP32' without having to connect to a network
+*/
 #include <Arduino.h>
 #include "Sensors/Joystick.h"
 #include <esp_now.h>
@@ -14,8 +23,6 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
 
 void setup()
 {
-  delay(5000);
-
   Serial.begin(9600);
   controllerNames::verticalJoystick.initiateJoystick();
   controllerNames::horizontalJoystick.initiateJoystick();
@@ -57,7 +64,6 @@ void setup()
     Serial.println("Error creating task");
     return;
   }
-  Serial.println("Setup complete");
 }
 
 void loop()
@@ -76,23 +82,11 @@ void verticalReadSend(void *parameter)
   {
     if (xSemaphoreTake(controllerNames::myHandle, portMAX_DELAY) == pdTRUE)
     {
-      // Read vertical joystick value
       controllerNames::verticalJoystick.doReading();
       controllerNames::reading = controllerNames::verticalJoystick.getValue();
-      // Send reading
 
-      // TODO: add differentiation between what this and the next task sends
       esp_err_t result = esp_now_send(controllerNames::broadcastAddress, (uint8_t *)&controllerNames::reading, sizeof(controllerNames::reading));
-      if (result == ESP_OK)
-      {
-        // Serial.println("Sent with success");
-      }
-      else
-      {
-        // Serial.println("Error sending the data");
-      }
-      Serial.print("vertical: ");
-      Serial.println(controllerNames::reading);
+
       xSemaphoreGive(controllerNames::myHandle);
     }
     vTaskDelay(5);
@@ -105,24 +99,14 @@ void horizontalReadSend(void *parameter)
   {
     if (xSemaphoreTake(controllerNames::myHandle, portMAX_DELAY) == pdTRUE)
     {
-      // Read vertical joystick value
       controllerNames::horizontalJoystick.doReading();
       controllerNames::reading = controllerNames::horizontalJoystick.getValue();
 
-      controllerNames::reading += 10000;
+      controllerNames::reading += 10000;  //This reading is larger so we on the reciver side can
+                                          // easily see which task is sending us a reading value
 
-      // Send reading
       esp_err_t result = esp_now_send(controllerNames::broadcastAddress, (uint8_t *)&controllerNames::reading, sizeof(controllerNames::reading));
-      if (result == ESP_OK)
-      {
-        // Serial.println("Sent with success");
-      }
-      else
-      {
-        // Serial.println("Error sending the data");
-      }
-      Serial.print("horizontal: ");
-      Serial.println(controllerNames::reading);
+
       xSemaphoreGive(controllerNames::myHandle);
     }
     vTaskDelay(5);
