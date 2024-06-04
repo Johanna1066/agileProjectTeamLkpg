@@ -3,7 +3,7 @@ https://github.com/Johanna1066/agileProjectTeamLkpg/
 Controller arduino code for a 'Arduino nano ESP32'
 Using object oriented code. Joystick objects get assigned a PIN that can read the joystick directions
 Using tasks to allow signal inputs from both joysticks
-Sending code to another 'Arduino nano ESP32' over WiFi using the recivers MAC adress
+Sending code to another 'Arduino nano ESP32' over WiFi using the receivers MAC adress
 
 Using the esp_now protocol to connect to another 'Arduino nano ESP32' without having to connect to a network
 */
@@ -102,7 +102,7 @@ void horizontalReadSend(void *parameter)
       controllerNames::horizontalJoystick.doReading();
       controllerNames::reading = controllerNames::horizontalJoystick.getValue();
 
-      controllerNames::reading += 10000;  //This reading is larger so we on the reciver side can
+      controllerNames::reading += 10000;  //This reading is larger so we on the receiver side can
                                           // easily see which task is sending us a reading value
 
       esp_err_t result = esp_now_send(controllerNames::broadcastAddress, (uint8_t *)&controllerNames::reading, sizeof(controllerNames::reading));
