@@ -13,7 +13,7 @@ Using the esp_now protocol to connect to another 'Arduino nano ESP32' without ha
 #include <esp_now.h>
 #include <WiFi.h>
 #include "semphr.h"
-#include "Namespace.h"
+#include "controllerNamespace.h"
 
 void horizontalReadSend(void *parameters);
 void verticalReadSend(void *parameters);
