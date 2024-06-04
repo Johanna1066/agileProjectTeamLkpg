@@ -9,9 +9,9 @@ namespace okej
     const int safeServoDistance{20};
     SemaphoreHandle_t servoHandle;
 
-    USsensor mySensor(D8, D7); // TODO: Change to correct PINs
+    USsensor mySensor(D8, D7);
     bool hinderForwardMovement = false;
-
+    
     int reading{};
     int dataRecieved{};
 

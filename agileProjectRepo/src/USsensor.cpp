@@ -34,5 +34,5 @@ void USsensor::readDistance()
 
     long messurement = pulseIn(sensorRecieverPIN, HIGH);
 
-    distance = (messurement / 2) / 29.1; // Convert distance to cm
+    distance = (messurement / 2) / 29.1; // Convert distance from inch to cm
 }

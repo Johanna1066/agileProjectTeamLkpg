@@ -1,14 +1,14 @@
 /*
  * The Engine class is responsible for controlling the speed of the engines.
- * The members engineVelocityPIN(int), enginePositivePIN(int), '
- * and engineNegativePIN(int) are the hardware connection and need to be
- * given when an engine object is created.
+ * The members engineVelocityPIN(int), enginePositivePIN(int), and
+ * engineNegativePIN(int) represent the hardware connections and need to be
+ * provided when an Engine object is created.
  *
- * direction(bool) determines if the engine is currently going backwards or
- * forward, true = forward and false = backwards.
+ * The direction(bool) member determines if the engine is currently going
+ * forwards (true) or backwards (false).
  *
- * currentVelocity(int) helps to make sure that the velocity is only set if
- * the velocity has actually changed since the last call.
+ * The currentVelocity(int) member ensures that the velocity is only set if
+ * it has actually changed since the last call.
  */
 class Engine
 {
@@ -21,19 +21,34 @@ private:
     bool direction{true}; // true = forward, false = backwards
 
 public:
+    /**
+     * @brief Constructs an Engine object.
+     *
+     * @param velocityPIN The pin number for controlling velocity.
+     * @param positivePIN The pin number for forward direction.
+     * @param negativePIN The pin number for backward direction.
+     */
     Engine(int velocityPIN, int positivePIN, int negativePIN);
 
     ~Engine();
 
-    /*takes two arguments, inVelocity(int) that is rescaledusing the arduino
-    map-funtion to the desired new velocity for the engine. The other is
-    obsticle(bool) that should be true of there is an obsticle in the way
-    and the engine should hinder movement forwards.*/
+    /**
+     * @brief Sets the velocity of the engine.
+     *
+     * @param newVelocity The new velocity to set, rescaled using the Arduino
+     * map function to the desired range for the engine.
+     * @param obstacle Indicates if there is an obstacle in the way (true if obstacle present,
+     * false otherwise). If true, the engine should hinder forward movement.
+     */
     void setVelocity(int, bool);
 
-    // does the electronic switch between forward and backwards movement.
+    /**
+     * @brief Reverses the direction of the engine.
+     */
     void directionReverse();
 
-    // does all of the necessary electronic setup for the hardware to work properly.
+    /**
+     * @brief Initializes the engine.
+     */
     void intitateEngine();
 };

@@ -1,5 +1,5 @@
-/*
- * Header file containing all of the function definitions and globlal variables
+/**
+ * Header file containing all of the function definitions and global variables
  * used by main.cpp to run the car.
  */
 
@@ -8,23 +8,34 @@
 #include "Motors/SteeringServo.h"
 #include "carNamespace.h"
 
-/* Loops through the vector of engine objects and sets all
- * their velocities and/or direction accordingly to the inarguments.*/
-void setEnginesVelocity(int, bool);
+/**
+ * @brief Sets the velocity and direction of all engine objects.
+ *  
+ * @param velocity The velocity to set for the engines.
+ * @param obstacle Indicates if there is an obstacle (true if obstacle present, false otherwise).
+ */
+void setEnginesVelocity(int velocity, bool obsticle);
 
-/* Runs when the controller esp32 sends any data to the car esp32.
- * Depending on the data recieved it's either handled as a
- * engine command or as a servo command.*/
+/**
+ * @brief Handles incoming data from the controller ESP32.
+ * 
+ * @param mac The MAC address of the sender.
+ * @param incomingData The incoming data received.
+ * @param len The length of the incoming data.
+ */
 void onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len);
 
-/* Runs at the start of setup() in main.cpp and makes sure that the hardware
- * is initiated, the communication protocol is initiated and set up
- * correctly and the semaphore mutex handles are created.*/
+/**
+ * @brief Initializes hardware and communication protocols.
+ * 
+ */
 void initate();
 
-/* Makes a reading of the sensor object and if there is the bool
- * hinderForwardMovement is set to true, if it's not the bool is set
- * to false.*/
+/**
+ * @brief Checks the sensor reading and updates the movement flag.
+ * 
+ * @param parameters Additional parameters for the function (typically unused).
+ */
 void sensorCheck(void *parameters);
 
 void setEnginesVelocity(int velocity, bool obsticle)
@@ -39,6 +50,12 @@ void onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
     memcpy(&okej::dataRecieved, incomingData, sizeof(okej::dataRecieved));
 
+    /**
+     *  10000 is added to the data sent from the controller if the data
+     * is supposed to be a servo command to distinguish from engine commands.
+     * Therefore the data has to be modified before sending the actual
+     * command to the servo object.
+     */
     if (okej::dataRecieved >= 10000)
     {
         if (xSemaphoreTake(okej::servoHandle, portMAX_DELAY) == pdTRUE)

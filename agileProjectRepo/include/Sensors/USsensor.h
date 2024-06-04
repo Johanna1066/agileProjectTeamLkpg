@@ -1,4 +1,4 @@
-/*
+/**
  * The sensor class is responsible for controlling the ultra sonic sensors
  * of the car. The members sensorTriggerPIN and sensorRecieverPIN are the
  * hardware connection and need to be given when a sensor object is created.
@@ -15,15 +15,32 @@ private:
     long distance{};
 
 public:
+    /**
+     * @brief Constructs a USsensor object.
+     *
+     * @param triggerPIN The pin number for triggering the sensor.
+     * @param receiverPIN The pin number for receiving the sensor's echo.
+     */
     USsensor(int triggerPIN, int recieverPIN);
 
-    /*does all of the necessary electronic setup for the hardware
-    to work properly.*/
+    /**
+     * @brief Initializes the ultrasonic sensor.
+     *
+     */
     void initiateUSsensor();
 
-    // returns the most current sensor reading.
+    /**
+     * @brief Gets the most current sensor reading.
+     *
+     * @return The most recent distance reading in centimeters.
+     */
     long getDistance();
 
-    // does a new reading of the sensor and updates distance.
+    /**
+     * @brief Performs a new reading of the sensor and updates the distance.
+     *
+     * This function triggers the sensor, waits for the echo, and updates the
+     * distance member with the new reading.
+     */
     void readDistance();
 };
