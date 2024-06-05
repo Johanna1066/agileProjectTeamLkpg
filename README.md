@@ -39,13 +39,13 @@ Open the .ino file from the cloned repository in the Arduino IDE.
 3. **Install Required Libraries**
 Ensure you have the following libraries installed:
 
--Arduino.h
+      -Arduino.h
 
--esp_now.h
+      -esp_now.h
 
--WiFi.h
+      -WiFi.h
 
--ESP32Servo.h
+      -ESP32Servo.h
  
 4. **Upload the Code**
 Connect your Arduino Nano ESP32 to your computer and upload the code.
