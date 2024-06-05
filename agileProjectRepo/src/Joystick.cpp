@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "Sensors/Joystick.h"
+#include "Sensors/joystick.h"
 
 /*
  * @brief Constructor that initializes joystickAnalogPIN with the provided pin number

@@ -1,6 +1,6 @@
 #include "functions.h"
 #include <Arduino.h>
-#include "Sensors/Joystick.h"
+#include "Sensors/joystick.h"
 #include <esp_now.h>
 #include <WiFi.h>
 #include "semphr.h"
