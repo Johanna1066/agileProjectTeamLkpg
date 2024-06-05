@@ -1,3 +1,5 @@
+#ifndef _WCC_JOYSTICK_H
+#define _WCC_JOYSTICK_H
 /*
  * @brief Joystick class
  * Each object of the Joystick class controls one joystick direction.
@@ -14,33 +16,22 @@ class Joystick
 private:
     // @brief used in initiateJoystick. Gets its value from the constructor Joystick(int PIN)
     int joystickAnalogPIN{};
+
     // @brief stores the joystick's current value, updated in doReading()
     int currentValue{};
+
     // @brief used to find and map the center value of the joystick
     int initialCenter{};
 public:
-    /*
-     * @brief Constructor that initializes joystickAnalogPIN with the provided pin number
-     */
     Joystick(int pinIN);
 
-    /*
-     * @brief Destructor
-     */
-    ~Joystick();
 
-    /*
-     * @brief Used in setup to assign the analog PIN to the joystick
-     */
+    ~Joystick() = default;
+
     void initiateJoystick();
 
-    /*
-     * @brief Reads the joystick value and updates currentValue after remapping it
-     */
     void doReading();
 
-    /*
-     * @brief Returns the currentValue after mapping it
-     */
     int getValue();
 };
+#endif //_WCC_JOYSTICK_H

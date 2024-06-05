@@ -1,3 +1,6 @@
+#ifndef _WCC_CONTROLLERNAMESPACE_H
+#define _WCC_CONTROLLERNAMESPACE_H
+
 /*
  * Namespace for hand-controller
  * This namespace encapsulates all the variables and objects related to the hand-controller functionality.
@@ -10,16 +13,17 @@
  * broadcastAddress: The MAC address of the receiver unit that this unit is trying to connect to (replace with your specific receiver's MAC address).
  */
 namespace controllerNames {
-    // reading: Stores the data from the joysticks to be sent to the receiver Arduino.
     int reading{};
-    // verticalJoystick(int): Joystick object for vertical joystick readings, connected to analog pin.
+
     Joystick verticalJoystick(A2);
-    // horizontalJoystick(int): Joystick object for horizontal joystick readings, connected to analog pin.
+
     Joystick horizontalJoystick(A4);
-    // myHandle: Semaphore handle for task synchronization and protection of shared resources.
-    SemaphoreHandle_t myHandle;
-    // peerInfo: Structure containing information about the ESP-NOW peer for WiFi communication.
+
+    SemaphoreHandle_t joystickHandle;
+
     esp_now_peer_info_t peerInfo;
-    // broadcastAddress: MAC address of the receiver unit this unit is trying to connect to (replace with your receiver's MAC address).
+
     uint8_t broadcastAddress[] = {0xEC, 0xDA, 0x3B, 0x60, 0xCD, 0xB4};
 }
+
+#endif //_WCC_CONTROLLERNAMESPACE_H

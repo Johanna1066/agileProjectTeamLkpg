@@ -10,12 +10,6 @@ Joystick::Joystick(int pinIN)
     joystickAnalogPIN = pinIN;
 }
 
-/*
- * @brief Destructor
- */
-Joystick::~Joystick()
-{
-}
 
 /*
  * @brief Initializes the joystick by setting the pin mode and reading the initial center value
