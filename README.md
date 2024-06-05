@@ -34,41 +34,54 @@ OnDataSent(): Callback for ESP-NOW data sent event.
 verticalReadSend(): Task for reading and sending vertical joystick data.
 horizontalReadSend(): Task for reading and sending horizontal joystick data.
 Setup and Installation
-Hardware Requirements:
-
+Hardware Requirements
 Arduino Nano ESP32
 Two joysticks connected to analog pins A2 and A4
 WiFi network for ESP-NOW communication
-Software Requirements:
-
+Software Requirements
 Arduino IDE
 ESP32 board support installed in the Arduino IDE
 Required libraries: esp_now, WiFi, semphr
-Installation Steps:
-
+Installation Steps
 Clone the repository:
+
 bash
 Kopiera kod
 git clone https://github.com/Johanna1066/agileProjectTeamLkpg/
 Open the project in the Arduino IDE.
-Connect your Arduino Nano ESP32 to your computer.
-Compile and upload the main.cpp to the Arduino.
-Usage
-Initialization:
 
+Connect your Arduino Nano ESP32 to your computer.
+
+Compile and upload the main.cpp to the Arduino.
+
+Usage
+Initialization
 Ensure the joystick hardware is properly connected to the specified analog pins (A2 and A4).
 Power on the Arduino Nano ESP32.
-Operation:
-
+Operation
 The vertical and horizontal joystick values will be read and sent to the receiver Arduino Nano ESP32 using the ESP-NOW protocol.
 Monitor the serial output for status messages related to ESP-NOW transmission.
 Contributing
 Contributions are welcome! Please follow these steps to contribute:
 
 Fork the repository.
-Create a new branch: git checkout -b feature-branch.
-Commit your changes: git commit -m 'Add some feature'.
-Push to the branch: git push origin feature-branch.
+
+Create a new branch:
+
+bash
+Kopiera kod
+git checkout -b feature-branch
+Commit your changes:
+
+bash
+Kopiera kod
+git commit -m 'Add some feature'
+Push to the branch:
+
+bash
+Kopiera kod
+git push origin feature-branch
 Open a pull request.
+
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
