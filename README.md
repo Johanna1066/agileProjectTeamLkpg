@@ -64,7 +64,7 @@ Open the .ino file from the cloned repository in the Arduino IDE.
 4. **Compile and Upload the Code:**
 Compile and upload the main.cpp file to the Arduino Nano ESP32.
 
-**5. !!!!!!!!!!!!!!!!!!!!!!!!!!!!GÖR BILKOD elelr hämta elelr repo något!!!!!!!!!!!!!!!!!!!!!!!**
+**5. !!!!!!!!!!!!!!!!!!!!!!!!!!!!GÖR BILKOD eller hämta eller repo något!!!!!!!!!!!!!!!!!!!!!!!**
 
 ## Usage
 ### Initialization
