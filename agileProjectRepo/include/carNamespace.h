@@ -1,3 +1,9 @@
+#include <Arduino.h>
+#include <esp_now.h>
+#include <WiFi.h>
+#include <vector>
+
+
 namespace globalVariables
 {
     std::vector<Engine> engines;
@@ -15,4 +21,4 @@ namespace globalVariables
     int reading{};
     int dataRecieved{};
 
-} // namespace name
+} // namespace globalVariables

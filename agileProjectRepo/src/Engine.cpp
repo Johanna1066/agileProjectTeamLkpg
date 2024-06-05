@@ -3,8 +3,15 @@
  */
 
 #include <Arduino.h>
-#include "Motors/Engine.h"
+#include "Motors/engine.h"
 
+/**
+ * @brief Constructs an Engine object.
+ *
+ * @param velocityPIN The pin number for controlling velocity. Needs analog pin.
+ * @param positivePIN The pin number for forward direction. Needs digital pin.
+ * @param negativePIN The pin number for backward direction. Needs digital pin.
+ */
 Engine::Engine(int velocityPIN, int positivePIN, int negativePIN)
 {
     engineVelocityPIN = velocityPIN;
@@ -12,10 +19,9 @@ Engine::Engine(int velocityPIN, int positivePIN, int negativePIN)
     engineNegativePIN = negativePIN;
 }
 
-Engine::~Engine()
-{
-}
-
+/**
+ * @brief Reverses the direction of the engine.
+ */
 void Engine::directionReverse()
 {
     if (direction)
@@ -30,6 +36,14 @@ void Engine::directionReverse()
     }
 }
 
+/**
+ * @brief Sets the velocity of the engine.
+ *
+ * @param newVelocity The new velocity to set, rescaled using the Arduino
+ * map function to the desired range for the engine.
+ * @param obstacle Indicates if there is an obstacle in the way (true if obstacle present,
+ * false otherwise). If true, the engine should hinder forward movement.
+ */
 void Engine::setVelocity(int inVelocity, bool obsticle)
 {
     int newVelocity = map(inVelocity, 0, 4096, -255, 255);
@@ -72,6 +86,9 @@ void Engine::setVelocity(int inVelocity, bool obsticle)
     analogWrite(engineVelocityPIN, abs(newVelocity));
 }
 
+/**
+ * @brief Initializes the engine.
+ */
 void Engine::intitateEngine()
 {
     pinMode(engineVelocityPIN, OUTPUT);
