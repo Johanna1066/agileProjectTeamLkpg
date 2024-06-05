@@ -10,7 +10,7 @@
 
 /**
  * @brief Sets the velocity and direction of all engine objects.
- *  
+ *
  * @param velocity The velocity to set for the engines.
  * @param obstacle Indicates if there is an obstacle (true if obstacle present, false otherwise).
  */
@@ -18,7 +18,7 @@ void setEnginesVelocity(int velocity, bool obsticle);
 
 /**
  * @brief Handles incoming data from the controller ESP32.
- * 
+ *
  * @param mac The MAC address of the sender.
  * @param incomingData The incoming data received.
  * @param len The length of the incoming data.
@@ -27,13 +27,13 @@ void onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len);
 
 /**
  * @brief Initializes hardware and communication protocols.
- * 
+ *
  */
 void initate();
 
 /**
  * @brief Checks the sensor reading and updates the movement flag.
- * 
+ *
  * @param parameters Additional parameters for the function (typically unused).
  */
 void sensorCheck(void *parameters);
