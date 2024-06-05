@@ -47,12 +47,24 @@ Ensure you have the following libraries installed:
 4. **Upload the Code**
 Connect your Arduino Nano ESP32 to your computer and upload the code.
 
+
+
+
+
+5.!!!!!!!!!!!!!!!!!!!!!!! **Download this other repo aswell for the controller**!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
+
+
+
+
+
+
 ## Usage
 Once the setup is complete and the code is uploaded:
 
 1. Power on your Arduino Nano ESP32.
 2. The system will initialize the components and start the task for sensor checking.
-3. The car's steering and engine will be controlled based on the sensor data and commands received via ESP-NOW.
+3. The car's steering and engine will be controlled based on the sensor data and commands received via ESP-NOW from the controller.
 
 ## Contributing
 Contributions are welcome! Please follow these steps to contribute:
@@ -62,11 +74,9 @@ Contributions are welcome! Please follow these steps to contribute:
 3. Commit your changes (git commit -m 'Add some AmazingFeature').
 4. Push to the branch (git push origin feature/AmazingFeature).
 5. Open a pull request.
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+6. 
 
 ## Acknowledgements
-Special thanks to the contributors and the community for their support and contributions.
+Special thanks to John.
 
 For more information, visit the project repository.
