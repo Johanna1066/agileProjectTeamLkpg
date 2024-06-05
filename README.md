@@ -1,19 +1,15 @@
-# Car Arduino Project for 'Arduino Nano ESP32'
 
-This project involves using an 'Arduino Nano ESP32' to control a car. The code employs object-oriented programming principles to manage the car's components, including steering, velocity, and obstacle detection.
+# Car Control System Project
+
+This project focuses on controlling a car using an Arduino Nano ESP32. It integrates steering, velocity, obstacle detection, and communication using the ESP-NOW protocol.
 
 ## Table of Contents
-- [Introduction](#introduction)
 - [Features](#features)
 - [Components](#components)
 - [Setup](#setup)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 - [Acknowledgements](#acknowledgements)
-
-## Introduction
-This project provides code for an 'Arduino Nano ESP32' to control a car's steering, engine, and sensors. The implementation includes various objects and tasks to handle different functionalities such as steering, velocity control, obstacle detection, and communication using the ESP-NOW protocol.
 
 ## Features
 - **Steering Control**: Uses `SteeringServo` objects assigned to specific pins.
@@ -33,44 +29,33 @@ This project provides code for an 'Arduino Nano ESP32' to control a car's steeri
 1. **Clone the Repository**
    ```sh
    git clone https://github.com/Johanna1066/agileProjectTeamLkpg/
-2. **Open the Project in Arduino IDE**
+Open the Project in Arduino IDE
 Open the .ino file from the cloned repository in the Arduino IDE.
 
-3. **Install Required Libraries**
-- Required libraries: `esp_now.h`, `WiFi.h`, `ESP32Servo.h` and `semphr`
- 
-4. **Upload the Code**
+Install Required Libraries
+Required libraries: esp_now.h, WiFi.h, ESP32Servo.h, and semphr.
+
+Upload the Code
 Connect your Arduino Nano ESP32 to your computer and upload the code.
 
+Download the Controller Repository
+Make sure to download the repository for the controller as well.
 
-
-
-
-5.!!!!!!!!!!!!!!!!!!!!!!! **Download this other repo aswell for the controller**!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-
-
-
-
-
-
-
-## Usage
+Usage
 Once the setup is complete and the code is uploaded:
 
-1. Power on your Arduino Nano ESP32.
-2. The system will initialize the components and start the task for sensor checking.
-3. The car's steering and engine will be controlled based on the sensor data and commands received via ESP-NOW from the controller.
-
-## Contributing
+Power on your Arduino Nano ESP32.
+The system will initialize the components and start the task for sensor checking.
+The car's steering and engine will be controlled based on the sensor data and commands received via ESP-NOW from the controller.
+Contributing
 Contributions are welcome! Please follow these steps to contribute:
 
-1. Fork the repository.
-2. Create your feature branch (git checkout -b feature/AmazingFeature).
-3. Commit your changes (git commit -m 'Add some AmazingFeature').
-4. Push to the branch (git push origin feature/AmazingFeature).
-5. Open a pull request.
-
-## Acknowledgements
+Fork the repository.
+Create your feature branch (git checkout -b feature/AmazingFeature).
+Commit your changes (git commit -m 'Add some AmazingFeature').
+Push to the branch (git push origin feature/AmazingFeature).
+Open a pull request.
+Acknowledgements
 Special thanks to John.
 
 For more information, visit the project repository.
