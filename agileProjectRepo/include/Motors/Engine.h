@@ -24,9 +24,9 @@ public:
     /**
      * @brief Constructs an Engine object.
      *
-     * @param velocityPIN The pin number for controlling velocity.
-     * @param positivePIN The pin number for forward direction.
-     * @param negativePIN The pin number for backward direction.
+     * @param velocityPIN The pin number for controlling velocity. Needs analog pin.
+     * @param positivePIN The pin number for forward direction. Needs digital pin.
+     * @param negativePIN The pin number for backward direction. Needs digital pin.
      */
     Engine(int velocityPIN, int positivePIN, int negativePIN);
 

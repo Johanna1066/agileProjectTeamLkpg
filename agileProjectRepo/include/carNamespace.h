@@ -1,4 +1,4 @@
-namespace okej
+namespace globalVariables
 {
     std::vector<Engine> engines;
     Engine right(A1, D5, D6);
@@ -11,7 +11,7 @@ namespace okej
 
     USsensor mySensor(D8, D7);
     bool hinderForwardMovement = false;
-    
+
     int reading{};
     int dataRecieved{};
 

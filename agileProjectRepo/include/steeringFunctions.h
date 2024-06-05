@@ -40,7 +40,7 @@ void sensorCheck(void *parameters);
 
 void setEnginesVelocity(int velocity, bool obsticle)
 {
-    for (auto &engine : okej::engines)
+    for (auto &engine : globalVariables::engines)
     {
         engine.setVelocity(velocity, obsticle);
     }
@@ -48,60 +48,60 @@ void setEnginesVelocity(int velocity, bool obsticle)
 
 void onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-    memcpy(&okej::dataRecieved, incomingData, sizeof(okej::dataRecieved));
+    memcpy(&globalVariables::dataRecieved, incomingData, sizeof(globalVariables::dataRecieved));
 
     /**
-     *  10000 is added to the data sent from the controller if the data
+     * 10000 is added to the data sent from the controller if the data
      * is supposed to be a servo command to distinguish from engine commands.
      * Therefore the data has to be modified before sending the actual
      * command to the servo object.
      */
-    if (okej::dataRecieved >= 10000)
+    if (globalVariables::dataRecieved >= 10000)
     {
-        if (xSemaphoreTake(okej::servoHandle, portMAX_DELAY) == pdTRUE)
+        if (xSemaphoreTake(globalVariables::servoHandle, portMAX_DELAY) == pdTRUE)
         {
-            okej::dataRecieved -= 10000;
+            globalVariables::dataRecieved -= 10000;
 
-            okej::myServo.setDirection(okej::dataRecieved);
+            globalVariables::myServo.setDirection(globalVariables::dataRecieved);
             delay(1);
-            xSemaphoreGive(okej::servoHandle);
+            xSemaphoreGive(globalVariables::servoHandle);
         }
     }
-    else if ((okej::dataRecieved >= 0) && (okej::dataRecieved <= 4096))
+    else if ((globalVariables::dataRecieved >= 0) && (globalVariables::dataRecieved <= 4096))
     {
-        if (xSemaphoreTake(okej::engineHandle, portMAX_DELAY) == pdTRUE)
+        if (xSemaphoreTake(globalVariables::engineHandle, portMAX_DELAY) == pdTRUE)
         {
 
-            setEnginesVelocity(okej::dataRecieved, okej::hinderForwardMovement);
+            setEnginesVelocity(globalVariables::dataRecieved, globalVariables::hinderForwardMovement);
             delay(1);
-            xSemaphoreGive(okej::engineHandle);
+            xSemaphoreGive(globalVariables::engineHandle);
         }
     }
 }
 
 void initiate()
 {
-    okej::myServo.initiateServo();
+    globalVariables::myServo.initiateServo();
 
-    okej::engines.push_back(okej::left);
-    okej::engines.push_back(okej::right);
+    globalVariables::engines.push_back(globalVariables::left);
+    globalVariables::engines.push_back(globalVariables::right);
 
-    for (auto &engine : okej::engines)
+    for (auto &engine : globalVariables::engines)
     {
         engine.intitateEngine();
     }
 
-    okej::mySensor.initiateUSsensor();
+    globalVariables::mySensor.initiateUSsensor();
 
-    okej::engineHandle = xSemaphoreCreateMutex();
-    okej::servoHandle = xSemaphoreCreateMutex();
+    globalVariables::engineHandle = xSemaphoreCreateMutex();
+    globalVariables::servoHandle = xSemaphoreCreateMutex();
 
-    if (okej::engineHandle == NULL)
+    if (globalVariables::engineHandle == NULL)
     {
         Serial.println("Error creating engine semaphore");
         return;
     }
-    if (okej::servoHandle == NULL)
+    if (globalVariables::servoHandle == NULL)
     {
         Serial.println("Error creating servo semaphore");
         return;
@@ -121,29 +121,29 @@ void sensorCheck(void *parameters)
 {
     for (;;)
     {
-        okej::mySensor.USsensor::readDistance();
-        okej::reading = okej::mySensor.USsensor::getDistance();
+        globalVariables::mySensor.USsensor::readDistance();
+        globalVariables::reading = globalVariables::mySensor.USsensor::getDistance();
 
-        if (okej::reading < okej::safeServoDistance)
+        if (globalVariables::reading < globalVariables::safeServoDistance)
         {
-            if (xSemaphoreTake(okej::engineHandle, portMAX_DELAY) == pdTRUE)
+            if (xSemaphoreTake(globalVariables::engineHandle, portMAX_DELAY) == pdTRUE)
             {
-                if (!okej::hinderForwardMovement)
+                if (!globalVariables::hinderForwardMovement)
                 {
-                    okej::hinderForwardMovement = true;
+                    globalVariables::hinderForwardMovement = true;
                 }
-                xSemaphoreGive(okej::engineHandle);
+                xSemaphoreGive(globalVariables::engineHandle);
             }
         }
         else
         {
-            if (xSemaphoreTake(okej::engineHandle, portMAX_DELAY) == pdTRUE)
+            if (xSemaphoreTake(globalVariables::engineHandle, portMAX_DELAY) == pdTRUE)
             {
-                if (okej::hinderForwardMovement)
+                if (globalVariables::hinderForwardMovement)
                 {
-                    okej::hinderForwardMovement = false;
+                    globalVariables::hinderForwardMovement = false;
                 }
-                xSemaphoreGive(okej::engineHandle);
+                xSemaphoreGive(globalVariables::engineHandle);
             }
         }
         vTaskDelay(10);
