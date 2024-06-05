@@ -1,32 +1,46 @@
 /*
-*Joystick class
-*Each object of the Joystick class controls one joystick direction.
-*
-*default constructor Joystick(int) requires an arduino PIN to function.
-*So Joystick can read and get values from our joystick.
-*
-*Joystick have 3 methods; initiateJoystick(), doReading(), getValue()
-*
-*Joystick have 3 private variables; joystickAnalogPIN, currentValue and initialCenter
-*/
+ * @brief Joystick class
+ * Each object of the Joystick class controls one joystick direction.
+ *
+ * The default constructor Joystick(int) requires an Arduino PIN to function.
+ * This allows the Joystick to read and get values from the joystick.
+ *
+ * Joystick has 3 methods: initiateJoystick(), doReading(), and getValue()
+ *
+ * Joystick has 3 private variables: joystickAnalogPIN, currentValue, and initialCenter
+ */
 class Joystick
 {
 private:
-    //joystickAnalogPIN, used in initiateJoystick. Gets its value from constructor Joystick(int PIN)
+    // @brief used in initiateJoystick. Gets its value from the constructor Joystick(int PIN)
     int joystickAnalogPIN{};
-    //currentValue, saves the joysticks current value in doReading()
+    // @brief stores the joystick's current value, updated in doReading()
     int currentValue{};
-    //initialCenter, used to find and map the center value of the joysticks
+    // @brief used to find and map the center value of the joystick
     int initialCenter{};
 public:
-    //Joystick(int), saves an int PIN that the object is going to use and read
+    /*
+     * @brief Constructor that initializes joystickAnalogPIN with the provided pin number
+     */
     Joystick(int pinIN);
 
+    /*
+     * @brief Destructor
+     */
     ~Joystick();
-    //initiateJoystick(), used in setup and uses the joystickAnalogPIN to assign PIN to joystick
+
+    /*
+     * @brief Used in setup to assign the analog PIN to the joystick
+     */
     void initiateJoystick();
-    //doReading(), sets currentValue based on joystick value and remaps it according to our map
+
+    /*
+     * @brief Reads the joystick value and updates currentValue after remapping it
+     */
     void doReading();
-    //getValue(), returns currentValue using map
+
+    /*
+     * @brief Returns the currentValue after mapping it
+     */
     int getValue();
 };

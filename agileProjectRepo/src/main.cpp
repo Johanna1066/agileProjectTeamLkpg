@@ -1,12 +1,14 @@
 /*
-https://github.com/Johanna1066/agileProjectTeamLkpg/
-Controller arduino code for a 'Arduino nano ESP32'
-Using object oriented code. Joystick objects get assigned a PIN that can read the joystick directions
-Using tasks to allow signal inputs from both joysticks
-Sending code to another 'Arduino nano ESP32' over WiFi using the receivers MAC adress
-
-Using the esp_now protocol to connect to another 'Arduino nano ESP32' without having to connect to a network
-*/
+ * @brief Controller Arduino code for an 'Arduino Nano ESP32'.
+ * @details This code uses object-oriented programming to manage joystick input and sends data to another 'Arduino Nano ESP32' via WiFi using ESP-NOW.
+ * @link https://github.com/Johanna1066/agileProjectTeamLkpg/
+ * 
+ * This implementation includes:
+ * - Joystick objects assigned to pins for reading joystick directions.
+ * - Tasks for handling signals from both joysticks.
+ * - Sending data to a receiver using its MAC address.
+ * - Using the ESP-NOW protocol to connect without a network.
+ */
 
 #include <Arduino.h>
 #include "Sensors/Joystick.h"
@@ -17,7 +19,6 @@ Using the esp_now protocol to connect to another 'Arduino nano ESP32' without ha
 
 void horizontalReadSend(void *parameters);
 void verticalReadSend(void *parameters);
-
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
 
@@ -47,6 +48,7 @@ void setup()
   memcpy(controllerNames::peerInfo.peer_addr, controllerNames::broadcastAddress, 6);
   controllerNames::peerInfo.channel = 0;
   controllerNames::peerInfo.encrypt = false;
+  
   if (esp_now_add_peer(&controllerNames::peerInfo) != ESP_OK)
   {
     Serial.println("Failed to add peer");
@@ -70,6 +72,11 @@ void loop()
 {
 }
 
+/*
+ * @brief Callback function for ESP-NOW data sent event.
+ * @param mac_addr The MAC address of the receiver.
+ * @param status The status of the sent packet (success or failure).
+ */
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
   Serial.print("\r\nLast Packet Send Status:\t");
@@ -102,8 +109,7 @@ void horizontalReadSend(void *parameter)
       controllerNames::horizontalJoystick.doReading();
       controllerNames::reading = controllerNames::horizontalJoystick.getValue();
 
-      controllerNames::reading += 10000;  //This reading is larger so we on the receiver side can
-                                          // easily see which task is sending us a reading value
+      controllerNames::reading += 10000;  // Increment value to distinguish between vertical and horizontal readings in the reciver code
 
       esp_err_t result = esp_now_send(controllerNames::broadcastAddress, (uint8_t *)&controllerNames::reading, sizeof(controllerNames::reading));
 
