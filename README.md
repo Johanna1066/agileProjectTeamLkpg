@@ -37,15 +37,7 @@ This project provides code for an 'Arduino Nano ESP32' to control a car's steeri
 Open the .ino file from the cloned repository in the Arduino IDE.
 
 3. **Install Required Libraries**
-Ensure you have the following libraries installed:
-
-      -Arduino.h
-
-      -esp_now.h
-
-      -WiFi.h
-
-      -ESP32Servo.h
+- Required libraries: `esp_now`, `WiFi`, `semphr`
  
 4. **Upload the Code**
 Connect your Arduino Nano ESP32 to your computer and upload the code.
