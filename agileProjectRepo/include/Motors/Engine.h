@@ -16,12 +16,20 @@
 class Engine
 {
 private:
-    int engineVelocityPIN{};
-    int enginePositivePIN{};
-    int engineNegativePIN{};
+    // Pin for controlling velocity
+    int engineVelocityPIN;
 
-    int currentVelocity{};
-    bool direction{true}; // true = forward, false = backwards
+    // Pin for forward direction
+    int enginePositivePIN;
+
+    // Pin for backward direction
+    int engineNegativePIN;
+
+    // Current velocity of the engine
+    int currentVelocity;
+
+    // true = forward, false = backwards
+    bool direction;
 
 public:
     Engine(int velocityPIN, int positivePIN, int negativePIN);

@@ -49,7 +49,7 @@ void onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
         {
             globalVariables::dataRecieved -= 10000;
 
-            globalVariables::myServo.setDirection(globalVariables::dataRecieved);
+            globalVariables::servo.setDirection(globalVariables::dataRecieved);
             delay(1);
             xSemaphoreGive(globalVariables::servoHandle);
         }
@@ -72,17 +72,17 @@ void onDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
  */
 void initiate()
 {
-    globalVariables::myServo.initiateServo();
+    globalVariables::servo.initiateServo();
 
-    globalVariables::engines.push_back(globalVariables::left);
-    globalVariables::engines.push_back(globalVariables::right);
+    globalVariables::engines.push_back(globalVariables::leftEngine);
+    globalVariables::engines.push_back(globalVariables::rightEngine);
 
     for (auto &engine : globalVariables::engines)
     {
         engine.intitateEngine();
     }
 
-    globalVariables::mySensor.initiateUSsensor();
+    globalVariables::sensor.initiateUSsensor();
 
     globalVariables::engineHandle = xSemaphoreCreateMutex();
     globalVariables::servoHandle = xSemaphoreCreateMutex();
@@ -117,8 +117,8 @@ void sensorCheck(void *parameters)
 {
     for (;;)
     {
-        globalVariables::mySensor.USsensor::readDistance();
-        globalVariables::reading = globalVariables::mySensor.USsensor::getDistance();
+        globalVariables::sensor.USsensor::readDistance();
+        globalVariables::reading = globalVariables::sensor.USsensor::getDistance();
 
         if (globalVariables::reading < globalVariables::safeServoDistance)
         {

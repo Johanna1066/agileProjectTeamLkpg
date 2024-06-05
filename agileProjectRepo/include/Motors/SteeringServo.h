@@ -18,11 +18,14 @@
 class SteeringServo
 {
 private:
-    int servoPIN{}; // The pin connected to the servo
+    // The pin connected to the servo
+    int servoPIN{}; 
 
-    int direction{60}; // Current direction, initialized to 60
+    // Current direction, initialized to 60
+    int direction{60}; 
 
-    Servo servoObject; // Servo object from the ESP32Servo library
+    // Servo object from the ESP32Servo library
+    Servo servoObject; 
 
 public:
     SteeringServo(int engineServoPIN);
