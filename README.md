@@ -40,8 +40,11 @@ Open the .ino file from the cloned repository in the Arduino IDE.
 Ensure you have the following libraries installed:
 
 -Arduino.h
+
 -esp_now.h
+
 -WiFi.h
+
 -ESP32Servo.h
  
 4. **Upload the Code**
